@@ -1,0 +1,55 @@
+<html>
+  <head>
+    <meta charset="utf-8" />
+    <style>
+      .email-container {
+        font-family: Arial, sans-serif;
+        max-width: 600px;
+        margin: 0 auto;
+        padding: 20px;
+        background-color: #f9f9f9;
+      }
+      .logo {
+        width: 100px;
+        margin-bottom: 20px;
+      }
+      .device-info {
+        background-color: #f5f5f5;
+        border: 1px solid #ddd;
+        padding: 15px;
+        margin: 20px 0;
+        border-radius: 5px;
+      }
+      .warning {
+        color: #e74c3c;
+        font-weight: bold;
+      }
+    </style>
+  </head>
+  <body>
+    <div class="email-container">
+      <img src="{{logoUrl}}" alt="{{from}}" class="logo" />
+      <h2>Nouvelle connexion à votre compte</h2>
+      <p>Bonjour {{username}},</p>
+      <p>Une nouvelle connexion a été détectée sur votre compte {{from}}.</p>
+      
+      <div class="device-info">
+        <h3>Détails de la connexion :</h3>
+        <ul>
+          <li>Date : {{loginDate}}</li>
+          <li>Navigateur : {{browser}}</li>
+          <li>Système d'exploitation : {{os}}</li>
+          <li>Adresse IP : {{ip}}</li>
+        </ul>
+      </div>
+
+      <p class="warning">Si vous n'êtes pas à l'origine de cette connexion, veuillez immédiatement :</p>
+      <ol>
+        <li>Changer votre mot de passe</li>
+        <li>Contacter notre support technique</li>
+      </ol>
+
+      <p>Cordialement,<br />L'équipe {{from}}</p>
+    </div>
+  </body>
+</html>

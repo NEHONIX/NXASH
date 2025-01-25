@@ -1,0 +1,29 @@
+[nodemon] restarting due to changes...
+[nodemon] starting `ts-node src/server.ts`
+NEHONIX Server started on port:5000
+Token n: eyJhbGciOiJSUzI1NiIsInR5cCI6IkpXVCJ9.eyJhdWQiOiJodHRwczovL2lkZW50aXR5dG9vbGtpdC5nb29nbGVhcGlzLmNvbS9nb29nbGUuaWRlbnRpdHkuaWRlbnRpdHl0b29sa2l0LnYxLklkZW50aXR5VG9vbGtpdCIsImlhdCI6MTczNzQxNDMxMywiZXhwIjoxNzM3NDE3OTEzLCJpc3MiOiJmaXJlYmFzZS1hZG1pbnNkay04MXFuZUBuZWhvbml4LWFjYWRlbXkuaWFtLmdzZXJ2aWNlYWNjb3VudC5jb20iLCJzdWIiOiJmaXJlYmFzZS1hZG1pbnNkay04MXFuZUBuZWhvbml4LWFjYWRlbXkuaWFtLmdzZXJ2aWNlYWNjb3VudC5jb20iLCJ1aWQiOiJoamQ0OUNoZmNrUVJ2UTlRU1BqYzRFOHNtTWYyIn0.TbZpg35sq2grG2LeWkpbHcPs-WPFRWhep5JmhjF9_pLAdFWqOK6Zq7Rh2gw9Yz7d0TYXcjrvpOI1wljUKiv2xSpONwfGbCiGdsmOnnWK69RIonW3Lf3Yd5bGsZkRaGE6o1Y4SlHPf-5xDOjBtUqpKNRfnHvV9J7OyTpfxRFDohX0xzz2o2pNCcuoC0LAIixkm0FE6cnWOFyzRp_eam1V3jq9An3C2uCYlw5286t5ywYtJoAB2aHW0JL763f1kkXSrC_ig1KLgQv5BT76jAApUzUn_SOUHHTEv7HhNckXXpUbgAD2JD77-SM2pbYlTF1esa5aZeQYkeMdk77u-UGu7g
+On continue!
+Tentative de vérification du token...
+Erreur de vérification du token: FirebaseAuthError: verifyIdToken() expects an ID token, but was given a custom token. See https://firebase.google.com/docs/auth/admin/verify-id-tokens for details on how to retrieve an ID token.
+    at FirebaseTokenVerifier.verifyContent (C:\Users\LENOVO\OneDrive\Documents\iDevo V1_Projet\iDevo new Projets\Projet en cours\NEHONIX\StudentLabs\server-side_v2.1\node_modules\firebase-admin\lib\auth\token-verifier.js:245:19)
+    at C:\Users\LENOVO\OneDrive\Documents\iDevo V1_Projet\iDevo new Projets\Projet en cours\NEHONIX\StudentLabs\server-side_v2.1\node_modules\firebase-admin\lib\auth\token-verifier.js:160:18
+    at processTicksAndRejections (node:internal/process/task_queues:105:5) {
+  errorInfo: {
+    code: 'auth/argument-error',
+    message: 'verifyIdToken() expects an ID token, but was given a custom token. See https://firebase.google.com/docs/auth/admin/verify-id-tokens for details on how to retrieve an ID token.'
+  },
+  codePrefix: 'auth'
+}
+Token n: eyJhbGciOiJSUzI1NiIsInR5cCI6IkpXVCJ9.eyJhdWQiOiJodHRwczovL2lkZW50aXR5dG9vbGtpdC5nb29nbGVhcGlzLmNvbS9nb29nbGUuaWRlbnRpdHkuaWRlbnRpdHl0b29sa2l0LnYxLklkZW50aXR5VG9vbGtpdCIsImlhdCI6MTczNzQxNDMxMywiZXhwIjoxNzM3NDE3OTEzLCJpc3MiOiJmaXJlYmFzZS1hZG1pbnNkay04MXFuZUBuZWhvbml4LWFjYWRlbXkuaWFtLmdzZXJ2aWNlYWNjb3VudC5jb20iLCJzdWIiOiJmaXJlYmFzZS1hZG1pbnNkay04MXFuZUBuZWhvbml4LWFjYWRlbXkuaWFtLmdzZXJ2aWNlYWNjb3VudC5jb20iLCJ1aWQiOiJoamQ0OUNoZmNrUVJ2UTlRU1BqYzRFOHNtTWYyIn0.TbZpg35sq2grG2LeWkpbHcPs-WPFRWhep5JmhjF9_pLAdFWqOK6Zq7Rh2gw9Yz7d0TYXcjrvpOI1wljUKiv2xSpONwfGbCiGdsmOnnWK69RIonW3Lf3Yd5bGsZkRaGE6o1Y4SlHPf-5xDOjBtUqpKNRfnHvV9J7OyTpfxRFDohX0xzz2o2pNCcuoC0LAIixkm0FE6cnWOFyzRp_eam1V3jq9An3C2uCYlw5286t5ywYtJoAB2aHW0JL763f1kkXSrC_ig1KLgQv5BT76jAApUzUn_SOUHHTEv7HhNckXXpUbgAD2JD77-SM2pbYlTF1esa5aZeQYkeMdk77u-UGu7g
+On continue!
+Tentative de vérification du token...
+Erreur de vérification du token: FirebaseAuthError: verifyIdToken() expects an ID token, but was given a custom token. See https://firebase.google.com/docs/auth/admin/verify-id-tokens for details on how to retrieve an ID token.
+    at FirebaseTokenVerifier.verifyContent (C:\Users\LENOVO\OneDrive\Documents\iDevo V1_Projet\iDevo new Projets\Projet en cours\NEHONIX\StudentLabs\server-side_v2.1\node_modules\firebase-admin\lib\auth\token-verifier.js:245:19)
+    at C:\Users\LENOVO\OneDrive\Documents\iDevo V1_Projet\iDevo new Projets\Projet en cours\NEHONIX\StudentLabs\server-side_v2.1\node_modules\firebase-admin\lib\auth\token-verifier.js:160:18
+    at processTicksAndRejections (node:internal/process/task_queues:105:5) {
+  errorInfo: {
+    code: 'auth/argument-error',
+    message: 'verifyIdToken() expects an ID token, but was given a custom token. See https://firebase.google.com/docs/auth/admin/verify-id-tokens for details on how to retrieve an ID token.'
+  },
+  codePrefix: 'auth'
+}

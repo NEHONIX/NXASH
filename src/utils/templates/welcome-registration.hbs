@@ -1,0 +1,62 @@
+<html>
+  <head>
+    <meta charset="utf-8" />
+    <style>
+      .email-container {
+        font-family: Arial, sans-serif;
+        max-width: 600px;
+        margin: 0 auto;
+        padding: 20px;
+        background-color: #f9f9f9;
+      }
+      .logo {
+        width: 100px;
+        margin-bottom: 20px;
+      }
+      .matricule-box {
+        background-color: #f5f5f5;
+        border: 1px solid #ddd;
+        padding: 15px;
+        margin: 20px 0;
+        border-radius: 5px;
+        text-align: center;
+      }
+      .matricule {
+        font-size: 24px;
+        color: #2c3e50;
+        font-weight: bold;
+      }
+      .important-note {
+        color: #e74c3c;
+        font-weight: bold;
+      }
+    </style>
+  </head>
+  <body>
+    <div class="email-container">
+      <img src="{{logoUrl}}" alt="{{from}}" class="logo" />
+      <h2>Bienvenue sur {{from}} !</h2>
+      <p>Bonjour {{username}},</p>
+      <p>Nous sommes ravis de vous accueillir sur la plateforme {{from}}. Votre compte a été créé avec succès !</p>
+      
+      <div class="matricule-box">
+        <p>Votre matricule est :</p>
+        <p class="matricule">{{matricule}}</p>
+        <p class="important-note">⚠️ Conservez précieusement ce matricule, il sera nécessaire pour vous connecter à votre compte.</p>
+      </div>
+
+      <p>Informations importantes :</p>
+      <ul>
+        <li>Email : {{email}}</li>
+        <li>Spécialité : {{specialty}}</li>
+        <li>Téléphone : {{phone}}</li>
+      </ul>
+
+      <p>Votre compte est actuellement en attente de validation par notre équipe administrative. Vous recevrez un email dès que votre compte sera approuvé.</p>
+
+      <p>Si vous avez des questions, n'hésitez pas à nous contacter.</p>
+
+      <p>Cordialement,<br />L'équipe {{from}}</p>
+    </div>
+  </body>
+</html>

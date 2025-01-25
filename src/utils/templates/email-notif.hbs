@@ -1,0 +1,65 @@
+<html lang="fr">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <style>
+      body { font-family: Arial, sans-serif; line-height: 1.6; margin: 0;
+      padding: 0; background-color: #f4f4f4; } .container { max-width: 600px;
+      margin: 20px auto; background-color: #ffffff; border-radius: 8px;
+      box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1); padding: 20px; } .header {
+      text-align: center; padding: 20px 0; } .logo { max-width: 150px; height:
+      auto; } .content { padding: 20px; color: #333333; } .footer { text-align:
+      center; padding: 20px; color: #666666; font-size: 12px; border-top: 1px
+      solid #eeeeee; } .button { display: inline-block; padding: 10px 20px;
+      background-color: #007bff; color: #ffffff; text-decoration: none;
+      border-radius: 5px; margin: 20px 0; } .email-container { background-color:
+      #f9f9f9; padding: 20px; border-radius: 8px; } .message-content {
+      white-space: pre-line; margin: 20px 0; } .button { display: inline-block;
+      padding: 12px 24px; background-color: #0cb5ed; color: white;
+      text-decoration: none; border-radius: 4px; margin: 20px 0; } .button:hover
+      { background-color: #00bfff; } .footer { margin-top: 20px; padding-top:
+      20px; border-top: 1px solid #ddd; font-size: 0.9em; color: #666; } .list {
+      margin: 10px 0; padding-left: 20px; } .list-item { margin: 5px 0; }
+    </style>
+  </head>
+  <body>
+    <div class="container">
+      <div class="header">
+        <img src="{{logoUrl}}" alt="{{from}} Logo" class="logo" />
+      </div>
+      <div class="content">
+        <h2>Notification {{from}}</h2>
+        {{#if message}}
+          {{#if title}}
+            <h1>{{title}}</h1>
+          {{/if}}
+          <div class="message-content">{{{message}}}</div>
+        {{else}}
+          <p>Vous avez reçu une nouvelle notification de {{from}}.</p>
+        {{/if}}
+
+        {{#if actionUrl}}
+          <div style="text-align: center;">
+            <a href="{{actionUrl}}" class="button">
+              <button
+                style="background-color: transparent; color: white; border: none"
+              >{{actionText}}</button>
+            </a>
+          </div>
+        {{/if}}
+
+        {{#if expirationTime}}
+          <p style="font-size: 12px; color: #666;">
+            Cette notification est valable pendant
+            {{expirationTime}}
+            heures.
+          </p>
+        {{/if}}
+      </div>
+      <div class="footer">
+        <p>Cet email a été envoyé automatiquement par {{from}}.</p>
+        <p> {{currentYear}} {{from}}. Tous droits réservés.</p>
+      </div>
+    </div>
+  </body>
+</html>

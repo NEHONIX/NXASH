@@ -1,0 +1,74 @@
+rules_version = '2';
+service cloud.firestore {
+  match /databases/{database}/documents {
+    // Fonctions utilitaires
+    function isAuthenticated() {
+      return request.auth != null;
+    }
+    
+    function isInstructor() {
+      return isAuthenticated() && 
+        exists(/databases/$(database)/documents/instructors/$(request.auth.uid));
+    }
+    
+    function isStudent() {
+      return isAuthenticated() && 
+        exists(/databases/$(database)/documents/students/$(request.auth.uid));
+    }
+
+    // Règles pour les examens
+    match /exams/{examId} {
+      allow read: if isAuthenticated();
+      allow write: if isInstructor();
+    }
+
+    // Règles pour les paiements
+    match /payment_sessions/{paymentId} {
+      allow read: if isAuthenticated() && (
+        isInstructor() || 
+        request.auth.uid == resource.data.userId
+      );
+      // Seuls les instructeurs peuvent modifier les paiements
+      allow write: if isInstructor();
+    }
+
+    // Règles pour les instructeurs
+    match /instructors/{instructorId} {
+      allow read: if true;
+      allow write: if isAuthenticated() && (
+        request.auth.uid == instructorId || 
+        isInstructor()
+      );
+    }
+
+    // Règles pour les étudiants
+    match /students/{studentId} {
+      allow read: if isAuthenticated() && (
+        request.auth.uid == studentId || 
+        isInstructor()
+      );
+      allow write: if isAuthenticated() && (
+        request.auth.uid == studentId || 
+        isInstructor()
+      );
+    }
+
+    // Règles pour les cours
+    match /courses/{courseId} {
+      allow read: if true;
+      allow write: if isInstructor();
+      
+      // Sous-collection pour les chapitres
+      match /chapters/{chapterId} {
+        allow read: if true;
+        allow write: if isInstructor();
+        
+        // Sous-collection pour les leçons
+        match /lessons/{lessonId} {
+          allow read: if true;
+          allow write: if isInstructor();
+        }
+      }
+    }
+  }
+}
