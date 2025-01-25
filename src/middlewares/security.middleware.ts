@@ -51,6 +51,10 @@ const allowedOrigins = [
   "http://localhost:3000",
   "http://127.0.0.1:3000",
   "http://localhost:3001",
+  "https://www.academy.nehonix.space",
+  "https://academy.nehonix.space",
+  "https://www.nehonix.space",
+  "https://nehonix.space",
 ];
 
 export const corsMiddleware = cors({
