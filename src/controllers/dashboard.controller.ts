@@ -91,7 +91,7 @@ export class DashboardController {
         };
       });
 
-      const stats: DashboardStats = {
+      const stats = {
         coursesProgress,
         totalCourses,
         completedCourses,
