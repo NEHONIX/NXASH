@@ -207,7 +207,7 @@ const referalSlice = createSlice({
         state.loading.claim = true;
         state.error.claim = null;
       })
-      .addCase(claimReward.fulfilled, (state, action) => {
+      .addCase(claimReward.fulfilled, (state) => {
         state.loading.claim = false;
         state.successMessage = "Récompense réclamée avec succès !";
       })
