@@ -11,6 +11,7 @@ import {
 import { AuthenticatedRequest } from "../types/custom";
 import { ITokenPayload } from "../types/model";
 import { log } from "console";
+import { cookieOption } from "../utils/cookieOption";
 
 export class InstructorAuthController {
   static async register(
@@ -148,11 +149,7 @@ export class InstructorAuthController {
       });
 
       // Définir le cookie
-      res.cookie("instructorToken", token, {
-        httpOnly: true,
-        secure: process.env.NODE_ENV === "production",
-        maxAge: 7 * 24 * 60 * 60 * 1000, // 7 jours
-      });
+      res.cookie("instructorToken", token, cookieOption);
 
       res.status(200).json({
         success: true,
