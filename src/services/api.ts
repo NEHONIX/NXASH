@@ -5,9 +5,9 @@ import { DASHBOARD_SERVICES } from "./util/dashboard.service";
 import { STUDENTS_SERVICES } from "./util/students.service";
 import { SCHEDULE_SERVICES } from "./util/schedule.service";
 import { SETTINGS_SERVICES } from "./util/settings.service";
+import { BASE_URL } from "./BASE_URL";
 
-const API_URL =
-  import.meta.env.VITE_API_URL || "http://localhost:5000/api/instructor";
+const API_URL = import.meta.env.VITE_API_URL || BASE_URL;
 
 const api = axios.create({
   baseURL: API_URL,
