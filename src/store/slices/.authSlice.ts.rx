@@ -1,0 +1,152 @@
+import { createSlice, createAsyncThunk } from "@reduxjs/toolkit";
+import { authService } from "@/services/api";
+import {
+  LoginCredentials,
+  RegisterData,
+  UpdateProfileData,
+  User,
+} from "@/types/api";
+
+interface AuthState {
+  user: User | null;
+  loading: boolean;
+  error: string | null;
+}
+
+const initialState: AuthState = {
+  user: null,
+  loading: false,
+  error: null,
+};
+
+export const register = createAsyncThunk(
+  "auth/register",
+  async (data: RegisterData, { rejectWithValue }) => {
+    try {
+      const response = await authService.register(data);
+      return response;
+    } catch (error: any) {
+      return rejectWithValue(error.response?.data?.message || error.message);
+    }
+  }
+);
+
+export const login = createAsyncThunk(
+  "auth/login",
+  async (credentials: LoginCredentials, { rejectWithValue }) => {
+    try {
+      const response = await authService.login(credentials);
+      return response;
+    } catch (error: any) {
+      //console.error('Login error in thunk:', error);
+      return rejectWithValue(error.response?.data?.message || error.message);
+    }
+  }
+);
+
+export const logout = createAsyncThunk(
+  "auth/logout",
+  async (_, { rejectWithValue }) => {
+    try {
+      await authService.logout();
+    } catch (error: any) {
+      return rejectWithValue(error.response?.data?.message || error.message);
+    }
+  }
+);
+
+export const getProfile = createAsyncThunk(
+  "auth/getProfile",
+  async (_, { rejectWithValue }) => {
+    try {
+      const response = await authService.getMe();
+      return response;
+    } catch (error: any) {
+      return rejectWithValue(error.response?.data?.message || error.message);
+    }
+  }
+);
+
+export const updateProfile = createAsyncThunk(
+  "auth/updateProfile",
+  async (data: UpdateProfileData, { rejectWithValue }) => {
+    try {
+      const response = await authService.updateProfile(data);
+      return response;
+    } catch (error: any) {
+      return rejectWithValue(error.response?.data?.message || error.message);
+    }
+  }
+);
+
+const authSlice = createSlice({
+  name: "auth",
+  initialState,
+  reducers: {
+    clearError: (state) => {
+      state.error = null;
+    },
+  },
+  extraReducers: (builder) => {
+    builder
+      // Register
+      .addCase(register.pending, (state) => {
+        state.loading = true;
+        state.error = null;
+      })
+      .addCase(register.fulfilled, (state, action) => {
+        state.loading = false;
+        state.user = action.payload.user;
+      })
+      .addCase(register.rejected, (state, action) => {
+        state.loading = false;
+        state.error = action.payload as string || "Une erreur est survenue";
+      })
+      // Login
+      .addCase(login.pending, (state) => {
+        state.loading = true;
+        state.error = null;
+      })
+      .addCase(login.fulfilled, (state, action) => {
+        state.loading = false;
+        state.user = action.payload.user;
+      })
+      .addCase(login.rejected, (state, action) => {
+        state.loading = false;
+        state.error = action.payload as string || "Une erreur est survenue";
+      })
+      // Logout
+      .addCase(logout.fulfilled, (state) => {
+        state.user = null;
+      })
+      // Get Profile
+      .addCase(getProfile.pending, (state) => {
+        state.loading = true;
+        state.error = null;
+      })
+      .addCase(getProfile.fulfilled, (state, action) => {
+        state.loading = false;
+        state.user = action.payload;
+      })
+      .addCase(getProfile.rejected, (state, action) => {
+        state.loading = false;
+        state.error = action.payload as string || "Une erreur est survenue";
+      })
+      // Update Profile
+      .addCase(updateProfile.pending, (state) => {
+        state.loading = true;
+        state.error = null;
+      })
+      .addCase(updateProfile.fulfilled, (state, action) => {
+        state.loading = false;
+        state.user = action.payload;
+      })
+      .addCase(updateProfile.rejected, (state, action) => {
+        state.loading = false;
+        state.error = action.payload as string || "Une erreur est survenue";
+      });
+  },
+});
+
+export const { clearError } = authSlice.actions;
+export default authSlice.reducer;

@@ -1,0 +1,34 @@
+// Couleurs
+$primary-color: #2563eb;
+$secondary-color: #4b5563;
+$background-color: #f3f4f6;
+$text-color: #1f2937;
+$border-color: #e5e7eb;
+$error-color: #ef4444;
+$success-color: #10b981;
+
+// Breakpoints
+$mobile: 768px;
+$tablet: 1024px;
+$desktop: 1280px;
+
+// Espacements
+$spacing-xs: 0.25rem;
+$spacing-sm: 0.5rem;
+$spacing-md: 1rem;
+$spacing-lg: 1.5rem;
+$spacing-xl: 2rem;
+
+// Transitions
+$transition-fast: 0.2s ease;
+$transition-normal: 0.3s ease;
+$transition-slow: 0.5s ease;
+
+// Z-index
+$z-index-dropdown: 1000;
+$z-index-sticky: 1020;
+$z-index-fixed: 1030;
+$z-index-modal-backdrop: 1040;
+$z-index-modal: 1050;
+$z-index-popover: 1060;
+$z-index-tooltip: 1070;

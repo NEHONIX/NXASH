@@ -1,0 +1,277 @@
+.course-preview {
+  padding: 2rem;
+
+  .preview-header {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    margin-bottom: 2rem;
+
+    .back-button {
+      display: flex;
+      align-items: center;
+      gap: 0.5rem;
+      padding: 0.75rem 1.25rem;
+      border: none;
+      background: var(--background-secondary);
+      color: var(--text-primary);
+      border-radius: 0.5rem;
+      cursor: pointer;
+      transition: all 0.2s;
+
+      &:hover {
+        background: var(--background-hover);
+      }
+    }
+
+    .course-status {
+      padding: 0.5rem 1rem;
+      border-radius: 2rem;
+      font-size: 0.9rem;
+      font-weight: 500;
+      text-transform: capitalize;
+
+      &[data-status="draft"] {
+        background: var(--warning-light);
+        color: var(--warning);
+      }
+
+      &[data-status="published"] {
+        background: var(--success-light);
+        color: var(--success);
+      }
+
+      &[data-status="archived"] {
+        background: var(--error-light);
+        color: var(--error);
+      }
+    }
+  }
+
+  .preview-hero {
+    position: relative;
+    border-radius: 1rem;
+    overflow: hidden;
+    background: var(--background-secondary);
+    margin-bottom: 2rem;
+
+    .course-banner {
+      width: 100%;
+      height: 300px;
+      object-fit: cover;
+    }
+
+    .hero-content {
+      padding: 2rem;
+
+      h1 {
+        margin: 0 0 1rem;
+        font-size: 2rem;
+        color: var(--text-primary);
+      }
+
+      .description {
+        margin: 0 0 1.5rem;
+        font-size: 1.1rem;
+        color: var(--text-secondary);
+        line-height: 1.6;
+      }
+
+      .meta-info {
+        display: flex;
+        gap: 2rem;
+        color: var(--text-tertiary);
+
+        span {
+          display: flex;
+          align-items: center;
+          gap: 0.5rem;
+          font-size: 0.9rem;
+
+          &.level {
+            padding: 0.25rem 0.75rem;
+            background: var(--background-tertiary);
+            border-radius: 1rem;
+            color: var(--text-secondary);
+          }
+        }
+      }
+    }
+  }
+
+  .preview-content {
+    display: grid;
+    gap: 2rem;
+
+    .content-section {
+      h2 {
+        margin: 0 0 1.5rem;
+        font-size: 1.5rem;
+        color: var(--text-primary);
+      }
+
+      .about-grid {
+        display: grid;
+        grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+        gap: 1.5rem;
+
+        .info-card {
+          background: var(--background-secondary);
+          padding: 1.5rem;
+          border-radius: 1rem;
+
+          h3 {
+            margin: 0 0 1rem;
+            font-size: 1.1rem;
+            color: var(--text-primary);
+          }
+
+          ul {
+            list-style: none;
+            padding: 0;
+            margin: 0;
+            display: grid;
+            gap: 0.75rem;
+
+            li {
+              display: flex;
+              align-items: center;
+              padding: 0.75rem;
+              background: var(--background-tertiary);
+              border-radius: 0.5rem;
+              color: var(--text-secondary);
+              font-size: 0.9rem;
+
+              &::before {
+                content: "•";
+                margin-right: 0.5rem;
+                color: var(--primary-color);
+              }
+            }
+          }
+        }
+      }
+
+      .chapters-list {
+        display: grid;
+        gap: 1rem;
+
+        .chapter-item {
+          background: var(--background-secondary);
+          border-radius: 0.75rem;
+          overflow: hidden;
+          cursor: pointer;
+          transition: all 0.2s;
+
+          &:hover {
+            background: var(--background-hover);
+          }
+
+          &.active {
+            background: var(--background-hover);
+
+            .chapter-header {
+              border-bottom: 1px solid var(--border-color);
+            }
+          }
+
+          .chapter-header {
+            padding: 1.25rem;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+
+            h3 {
+              margin: 0;
+              font-size: 1rem;
+              color: var(--text-primary);
+              display: flex;
+              align-items: center;
+              gap: 0.75rem;
+
+              .chapter-number {
+                font-size: 0.85rem;
+                padding: 0.25rem 0.5rem;
+                background: var(--background-tertiary);
+                border-radius: 0.25rem;
+                color: var(--text-secondary);
+              }
+            }
+
+            .duration {
+              font-size: 0.9rem;
+              color: var(--text-tertiary);
+            }
+          }
+
+          .chapter-content {
+            padding: 1.25rem;
+            background: var(--background-tertiary);
+
+            p {
+              margin: 0 0 1rem;
+              color: var(--text-secondary);
+              font-size: 0.95rem;
+              line-height: 1.6;
+            }
+
+            .lessons-list {
+              list-style: none;
+              padding: 0;
+              margin: 0;
+              display: grid;
+              gap: 0.5rem;
+
+              li {
+                display: flex;
+                justify-content: space-between;
+                align-items: center;
+                padding: 0.75rem 1rem;
+                background: var(--background-secondary);
+                border-radius: 0.5rem;
+                font-size: 0.9rem;
+
+                .lesson-title {
+                  color: var(--text-primary);
+                }
+
+                .lesson-duration {
+                  color: var(--text-tertiary);
+                  font-size: 0.85rem;
+                }
+              }
+            }
+          }
+        }
+      }
+    }
+  }
+}
+
+.course-preview-error {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  min-height: 400px;
+  text-align: center;
+
+  h2 {
+    margin: 0 0 1rem;
+    color: var(--text-primary);
+  }
+
+  button {
+    padding: 0.75rem 1.5rem;
+    background: var(--primary-color);
+    color: white;
+    border: none;
+    border-radius: 0.5rem;
+    cursor: pointer;
+    transition: background-color 0.2s;
+
+    &:hover {
+      background: var(--primary-dark);
+    }
+  }
+}
