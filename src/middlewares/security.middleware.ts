@@ -55,6 +55,8 @@ const allowedOrigins = [
   "https://academy.nehonix.space",
   "https://www.nehonix.space",
   "https://nehonix.space",
+   "https://admin-prof.nehonix.space",
+   "https://www.admin-prof.nehonix.space",
 ];
 
 export const corsMiddleware = cors({
