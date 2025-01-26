@@ -1,0 +1,65 @@
+import React, { useState } from "react";
+import { AlertTriangle, RefreshCcw } from "lucide-react";
+import PaymentModal from "../PaymentModal";
+
+interface RenewSubscriptionProps {
+  warningMessage?: string;
+  subscriptionDetails?: {
+    montantMensuel: number;
+    specialty: string;
+  };
+}
+
+const RenewSubscription: React.FC<RenewSubscriptionProps> = ({
+  warningMessage = "Votre abonnement arrive à expiration",
+  subscriptionDetails,
+}) => {
+  const [isPaymentModalOpen, setIsPaymentModalOpen] = useState(false);
+
+  const handleRenewSubscription = () => {
+    setIsPaymentModalOpen(true);
+  };
+
+  return (
+    <div className="renew-subscription-container">
+      <div className="warning-banner">
+        <AlertTriangle color="#FFA500" size={48} />
+        <div className="warning-content">
+          <h2>Renouvellement d'Abonnement</h2>
+          <p>{warningMessage}</p>
+
+          {subscriptionDetails && (
+            <div className="subscription-details">
+              <div className="detail-item">
+                <span>Forfait actuel :</span>
+                <strong>{subscriptionDetails.specialty}</strong>
+              </div>
+              <div className="detail-item">
+                <span>Montant mensuel :</span>
+                <strong>
+                  {subscriptionDetails.montantMensuel.toLocaleString()} FCFA
+                </strong>
+              </div>
+            </div>
+          )}
+        </div>
+
+        <button className="renew-button" onClick={handleRenewSubscription}>
+          <RefreshCcw size={16} />
+          Renouveler maintenant
+        </button>
+      </div>
+
+      {isPaymentModalOpen && (
+        <PaymentModal
+          loading={loading}
+          onSubmit={() => handleRenewSubscription()}
+          isOpen={isPaymentModalOpen}
+          onClose={() => setIsPaymentModalOpen(false)}
+        />
+      )}
+    </div>
+  );
+};
+
+export default RenewSubscription;

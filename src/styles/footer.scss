@@ -1,0 +1,74 @@
+.footer {
+  background: linear-gradient(to right, #f8f9fa, #ffffff);
+  // background-color: #0e042b;
+  // text-align: center;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  border-top: 1px solid #eaeaea;
+  padding: 1rem 0;
+  position: fixed;
+  bottom: 0;
+  width: 100%;
+  z-index: 100;
+  box-shadow: 0 -2px 10px rgba(0, 0, 0, 0.05);
+
+  .footer-content {
+    max-width: 1200px;
+    margin: 0 auto;
+    padding: 0 1rem;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    flex-wrap: wrap;
+    gap: 1rem;
+
+    .footer-info {
+      .version {
+        font-size: 0.875rem;
+        color: #666;
+        margin: 0;
+      }
+
+      .copyright {
+        font-size: 0.75rem;
+        color: #999;
+        margin: 0.25rem 0 0 0;
+      }
+    }
+
+    .footer-love {
+      p {
+        display: flex;
+        align-items: center;
+        gap: 0.5rem;
+        font-size: 0.875rem;
+        color: #666;
+        margin: 0;
+
+        .heart-icon {
+          color: #ff4d4f;
+          animation: heartBeat 1.5s ease infinite;
+        }
+      }
+    }
+  }
+}
+
+@keyframes heartBeat {
+  0% {
+    transform: scale(1);
+  }
+  14% {
+    transform: scale(1.3);
+  }
+  28% {
+    transform: scale(1);
+  }
+  42% {
+    transform: scale(1.3);
+  }
+  70% {
+    transform: scale(1);
+  }
+}

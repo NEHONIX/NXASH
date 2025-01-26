@@ -1,0 +1,83 @@
+.subscription-container {
+  padding: 2rem;
+  max-width: 1200px;
+  margin: 0 auto;
+
+  h1 {
+    color: #000080;
+    margin-bottom: 2rem;
+    font-size: 2rem;
+    font-weight: bold;
+  }
+
+  .current-status {
+    background: white;
+    border-radius: 1rem;
+    padding: 2rem;
+    box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+    margin-bottom: 2rem;
+
+    h2 {
+      color: #2c3e50;
+      margin-bottom: 1.5rem;
+      font-size: 1.5rem;
+    }
+
+    .status-grid {
+      display: grid;
+      gap: 1.5rem;
+
+      .status-item {
+        display: flex;
+        justify-content: space-between;
+        align-items: center;
+        padding-bottom: 1rem;
+        border-bottom: 1px solid #eee;
+
+        &:last-child {
+          border-bottom: none;
+          padding-bottom: 0;
+        }
+
+        .label {
+          color: #666;
+          font-size: 1rem;
+        }
+
+        .value {
+          font-weight: 600;
+
+          &.plan {
+            color: #000080;
+          }
+
+          &.status {
+            padding: 0.5rem 1rem;
+            border-radius: 2rem;
+            font-size: 0.875rem;
+
+            &.active {
+              background-color: #dcfce7;
+              color: #22c55e;
+            }
+
+            &.inactive {
+              background-color: #fee2e2;
+              color: #ef4444;
+            }
+          }
+        }
+      }
+    }
+  }
+}
+
+.subscription-error {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  min-height: 400px;
+  text-align: center;
+  color: #666;
+  font-size: 1.1rem;
+}

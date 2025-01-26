@@ -1,0 +1,109 @@
+$primary-color: #0cb5ed;
+$warning-color: #FFA500;
+$background-color: #f8fafc;
+$text-color: #1e293b;
+
+.renew-subscription-container {
+  width: 100%;
+  max-width: 800px;
+  margin: 2rem auto;
+  
+  .warning-banner {
+    display: flex;
+    align-items: center;
+    background-color: rgba($warning-color, 0.1);
+    border: 2px solid $warning-color;
+    border-radius: 12px;
+    padding: 1.5rem;
+    gap: 1.5rem;
+    box-shadow: 0 4px 6px rgba($warning-color, 0.2);
+    transition: all 0.3s ease;
+
+    &:hover {
+      transform: translateY(-5px);
+      box-shadow: 0 6px 10px rgba($warning-color, 0.3);
+    }
+
+    .warning-content {
+      flex-grow: 1;
+
+      h2 {
+        color: $warning-color;
+        margin-bottom: 0.5rem;
+        font-size: 1.5rem;
+        font-weight: 700;
+      }
+
+      p {
+        color: $text-color;
+        margin-bottom: 1rem;
+        font-size: 1rem;
+      }
+
+      .subscription-details {
+        display: flex;
+        gap: 1.5rem;
+        margin-top: 1rem;
+
+        .detail-item {
+          display: flex;
+          flex-direction: column;
+
+          span {
+            color: darken($text-color, 20%);
+            font-size: 0.875rem;
+            margin-bottom: 0.25rem;
+          }
+
+          strong {
+            color: $text-color;
+            font-size: 1rem;
+          }
+        }
+      }
+    }
+
+    .renew-button {
+      display: flex;
+      align-items: center;
+      gap: 0.5rem;
+      background-color: $primary-color;
+      color: white;
+      border: none;
+      border-radius: 8px;
+      padding: 0.75rem 1.25rem;
+      font-weight: 600;
+      cursor: pointer;
+      transition: all 0.3s ease;
+
+      &:hover {
+        background-color: darken($primary-color, 10%);
+        transform: scale(1.05);
+      }
+
+      svg {
+        margin-right: 0.5rem;
+      }
+    }
+  }
+}
+
+@media (max-width: 768px) {
+  .renew-subscription-container {
+    .warning-banner {
+      flex-direction: column;
+      text-align: center;
+
+      .warning-content {
+        .subscription-details {
+          flex-direction: column;
+          align-items: center;
+        }
+      }
+
+      .renew-button {
+        margin-top: 1rem;
+      }
+    }
+  }
+}

@@ -1,0 +1,215 @@
+// Variables
+$primary-color: #2f5562; // Bleu marine NEHONIX
+$secondary-color: #00bfff; // Bleu clair NEHONIX
+$background-color: #f8fafc;
+$text-color: #1e293b;
+$error-color: #ef4444;
+$success-color: #22c55e;
+
+// Breakpoints
+$mobile: 640px;
+$tablet: 768px;
+$desktop: 1024px;
+
+// Reset & Base styles
+* {
+  margin: 0;
+  padding: 0;
+  box-sizing: border-box;
+}
+
+body {
+  font-family: "Inter", sans-serif;
+  background-color: $background-color;
+  color: $text-color;
+  line-height: 1.5;
+}
+
+// Layout
+.app-layout {
+  min-height: 100vh;
+  display: flex;
+  flex-direction: column;
+}
+
+.app-container {
+  display: flex;
+  flex: 1;
+}
+
+.main-content {
+  flex: 1;
+  padding: 2rem;
+  overflow-y: auto;
+}
+
+// Navigation
+.navbar {
+  background-color: $primary-color;
+  padding: 1rem 2rem;
+  box-shadow: 0 1px 3px rgba(0, 0, 0, 0.1);
+  color: white;
+
+  &-logo {
+    height: 40px;
+  }
+
+  &-links {
+    a {
+      color: white;
+      text-decoration: none;
+      margin-left: 1.5rem;
+
+      &:hover {
+        color: $secondary-color;
+      }
+    }
+  }
+}
+
+.sidebar {
+  width: 250px;
+  background-color: white;
+  padding: 2rem;
+  box-shadow: 1px 0 3px rgba(0, 0, 0, 0.1);
+
+  &-link {
+    display: flex;
+    align-items: center;
+    padding: 0.75rem 1rem;
+    color: $text-color;
+    text-decoration: none;
+    border-radius: 0.375rem;
+    margin-bottom: 0.5rem;
+
+    &:hover {
+      background-color: rgba($secondary-color, 0.1);
+      color: $primary-color;
+    }
+
+    &.active {
+      background-color: $primary-color;
+      color: white;
+    }
+  }
+}
+
+// Components
+.btn {
+  padding: 0.5rem 1rem;
+  border-radius: 0.375rem;
+  font-weight: 500;
+  cursor: pointer;
+  transition: all 0.2s;
+
+  &-primary {
+    background-color: $primary-color;
+    color: white;
+    border: none;
+
+    &:hover {
+      background-color: darken($primary-color, 10%);
+    }
+  }
+
+  &-secondary {
+    background-color: $secondary-color;
+    color: white;
+    border: none;
+
+    &:hover {
+      background-color: darken($secondary-color, 10%);
+    }
+  }
+}
+
+// Auth pages
+.auth-container {
+  min-height: 100vh;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  background: linear-gradient(135deg, $primary-color, $secondary-color);
+
+  .auth-card {
+    background: white;
+    padding: 2rem;
+    border-radius: 1rem;
+    width: 100%;
+    max-width: 400px;
+    box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+
+    h2 {
+      color: $primary-color;
+      margin-bottom: 1.5rem;
+      text-align: center;
+    }
+  }
+}
+
+.form-group {
+  margin-bottom: 1rem;
+
+  label {
+    display: block;
+    margin-bottom: 0.5rem;
+    font-weight: 500;
+  }
+
+  input {
+    width: 100%;
+    padding: 0.75rem;
+    border: 1px solid #e2e8f0;
+    border-radius: 0.375rem;
+
+    &:focus {
+      outline: none;
+      border-color: $secondary-color;
+      box-shadow: 0 0 0 2px rgba($secondary-color, 0.2);
+    }
+  }
+}
+
+// Dashboard cards
+.dashboard-card {
+  background: white;
+  border-radius: 0.5rem;
+  padding: 1.5rem;
+  box-shadow: 0 1px 3px rgba(0, 0, 0, 0.1);
+
+  &-header {
+    color: $primary-color;
+    font-size: 1.25rem;
+    font-weight: 600;
+    margin-bottom: 1rem;
+  }
+}
+
+// Utilities
+.error {
+  color: $error-color;
+  font-size: 0.875rem;
+  margin-top: 0.25rem;
+}
+
+.success {
+  color: $success-color;
+  font-size: 0.875rem;
+  margin-top: 0.25rem;
+}
+
+// Responsive
+@media (max-width: $mobile) {
+  .app-container {
+    flex-direction: column;
+  }
+
+  .sidebar {
+    width: 100%;
+    padding: 1rem;
+  }
+
+  .main-content {
+    padding: 1rem;
+  }
+}
