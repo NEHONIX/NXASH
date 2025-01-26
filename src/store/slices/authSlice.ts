@@ -1,7 +1,7 @@
 import { createSlice, createAsyncThunk } from "@reduxjs/toolkit";
-import axios from "axios";
+// import axios from "axios";
 import { authService } from "../../services/api";
-import { BASE_URL_API } from "../../api/baseUrl.api";
+// import { BASE_URL_API } from "../../api/baseUrl.api";
 import { FirestoreTimestamp } from "../../utils/dateUtils";
 
 export type ApprovalStatus = "pending" | "approved" | "rejected";
@@ -33,16 +33,16 @@ interface PaymentSession {
   formationLevel: string;
 }
 
-interface AuthResponse {
-  success: boolean;
-  message: string;
-  data: {
-    token: string;
-    user: User;
-    requiresPayment?: boolean;
-    paymentSession?: PaymentSession;
-  };
-}
+// interface AuthResponse {
+//   success: boolean;
+//   message: string;
+//   data: {
+//     token: string;
+//     user: User;
+//     requiresPayment?: boolean;
+//     paymentSession?: PaymentSession;
+//   };
+// }
 
 interface AuthState {
   user: AuthUserT | null;

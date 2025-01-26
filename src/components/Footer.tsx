@@ -1,6 +1,5 @@
 import React from "react";
 import { APP_CONFIG } from "../config/app.config";
-import { Heart } from "lucide-react";
 import "../styles/footer.scss";
 const Footer: React.FC = () => {
   return (

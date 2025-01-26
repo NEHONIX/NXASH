@@ -1,6 +1,6 @@
 import { createSlice, createAsyncThunk } from "@reduxjs/toolkit";
 import { dashboardService } from "../../services/api";
-import { DashboardData, DashboardResponse } from "../../types/dashboard";
+import { DashboardData,  } from "../../types/dashboard";
 
 interface DashboardState {
   data: DashboardData | null;

@@ -14,7 +14,6 @@ import { APP_ROUTES } from "../pages/nehonix/app.endpoints";
 import { encodeData } from "../utils/encryption";
 import TooManyRequestsError from "../components/errors/TooManyRequestsError";
 import { courseService } from "../services/api";
-import { fetchDashboardStats } from "../store/slices/dashboardSlice";
 
 interface User {
   id: string;
@@ -62,7 +61,7 @@ export const AuthProvider: React.FC<{ children: React.ReactNode }> = ({
   );
   const [checkingAuth, setCheckingAuth] = useState(true);
   const [hasError429, setHasError429] = useState(false);
-  const [courses, setCourses] = useState([]);
+  // const [courses, setCourses] = useState([]);
   const coursesFetchInterval = React.useRef<NodeJS.Timeout | null>(null);
   const isFetchingCourses = React.useRef(false);
 
@@ -152,7 +151,7 @@ export const AuthProvider: React.FC<{ children: React.ReactNode }> = ({
       // Vérification supplémentaire pour éviter les requêtes redondantes
       if (courses && courses.length > 0) {
         // Mise à jour potentielle de l'état des cours si nécessaire
-        setCourses(courses);
+        // setCourses(courses);
       }
     } catch (error) {
       //console.error("Erreur lors de la récupération des cours:", error);

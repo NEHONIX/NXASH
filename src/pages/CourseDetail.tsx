@@ -1,7 +1,7 @@
-import React, { useState, useEffect } from "react";
+import React, { useState } from "react";
 import { useParams, useNavigate } from "react-router-dom";
-import { useSelector, useDispatch } from "react-redux";
-import { AppDispatch, RootState } from "../store";
+import { useSelector } from "react-redux";
+import { RootState } from "../store";
 import {
   Book,
   PlayCircle,
@@ -17,7 +17,7 @@ import { formatDateToFr, formatFirestoreDate } from "../utils/dateUtils";
 const CourseDetail: React.FC = () => {
   const { courseId } = useParams<{ courseId: string }>();
   const navigate = useNavigate();
-  const dispatch = useDispatch<AppDispatch>();
+  // const dispatch = useDispatch<AppDispatch>();
 
   // États pour la navigation et le contenu
   const [activeSection, setActiveSection] = useState<"description" | "content">(

@@ -1,10 +1,10 @@
 import { useEffect, useState } from "react";
-import { useLocation, useNavigate, useSearchParams } from "react-router-dom";
+import { useLocation, useNavigate} from "react-router-dom";
 import { authService } from "../services/api";
 import { APP_ASSETS } from "../nehonix/assets/APP_ASSETS";
 import { APP_ROUTES } from "./nehonix/app.endpoints";
 import {
-  VALID_STUDENT_LEVELS,
+  // VALID_STUDENT_LEVELS
   StudentLevel,
   SpecialtyLevel,
   IRegisterRequest,

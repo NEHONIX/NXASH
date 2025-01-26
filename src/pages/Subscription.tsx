@@ -1,23 +1,20 @@
-import { useState } from "react";
+// import { useState } from "react";
 import { useSelector } from "react-redux";
 import { RootState } from "../store";
-import PlanDisponible from "./PlanDisponible";
+// import PlanDisponible from "./PlanDisponible";
 import { formatFirestoreDate, formatDateToFr } from "../utils/dateUtils";
 import "./Subscription.scss";
 
-
 const Subscription = () => {
-  const { data, loading, error } = useSelector(
-    (state: RootState) => state.dashboard
-  );
+  const { data } = useSelector((state: RootState) => state.dashboard);
 
   const subscription = data?.stats?.subscription;
   const subscriptionStatus = data?.stats?.subscriptionStatus;
 
-  const handleSubscribe = (planId: string) => {
-    // TODO: Implémenter la logique de paiement réelle
-    alert("Redirection vers la page de paiement...");
-  };
+  // const handleSubscribe = (planId: string) => {
+  //   // TODO: Implémenter la logique de paiement réelle
+  //   alert("Redirection vers la page de paiement...");
+  // };
 
   if (!data?.stats) {
     return (

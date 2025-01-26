@@ -9,7 +9,7 @@ import PersonalProfil from "./Libs/Profil/Personal.profil";
 import SubscriptionProfil from "./Libs/Profil/Subscription.profil";
 import { AuthUserT } from "../store/slices/authSlice";
 import { GET_PATH_TITLE } from "../utils/getTitle";
-import { formatDateToFr, formatFirestoreDate } from "../utils/dateUtils";
+// import { formatDateToFr, formatFirestoreDate } from "../utils/dateUtils";
 
 const Profile = () => {
   const dispatch = useDispatch<AppDispatch>();

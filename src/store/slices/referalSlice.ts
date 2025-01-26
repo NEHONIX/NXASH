@@ -4,9 +4,9 @@ import type {
   ReferalStatsResponse,
   ReferalHistoryResponse,
   ReferalRewardsResponse,
-  InviteFriendsRequest,
-  InviteFriendsResponse,
-  ClaimRewardResponse,
+  // InviteFriendsRequest,
+  // InviteFriendsResponse,
+  // ClaimRewardResponse,
 } from "../../utils/referal-api";
 
 interface ReferalState {
@@ -60,7 +60,8 @@ export const fetchReferalStats = createAsyncThunk(
       return response.data;
     } catch (error: any) {
       return rejectWithValue(
-        error.response?.data?.message || "Erreur lors de la récupération des statistiques"
+        error.response?.data?.message ||
+          "Erreur lors de la récupération des statistiques"
       );
     }
   }
@@ -74,7 +75,8 @@ export const fetchReferalHistory = createAsyncThunk(
       return response.data;
     } catch (error: any) {
       return rejectWithValue(
-        error.response?.data?.message || "Erreur lors de la récupération de l'historique"
+        error.response?.data?.message ||
+          "Erreur lors de la récupération de l'historique"
       );
     }
   }
@@ -88,7 +90,8 @@ export const fetchReferalRewards = createAsyncThunk(
       return response.data;
     } catch (error: any) {
       return rejectWithValue(
-        error.response?.data?.message || "Erreur lors de la récupération des récompenses"
+        error.response?.data?.message ||
+          "Erreur lors de la récupération des récompenses"
       );
     }
   }
@@ -102,7 +105,8 @@ export const inviteFriends = createAsyncThunk(
       return response.data;
     } catch (error: any) {
       return rejectWithValue(
-        error.response?.data?.message || "Erreur lors de l'envoi des invitations"
+        error.response?.data?.message ||
+          "Erreur lors de l'envoi des invitations"
       );
     }
   }
@@ -116,7 +120,8 @@ export const claimReward = createAsyncThunk(
       return response.data;
     } catch (error: any) {
       return rejectWithValue(
-        error.response?.data?.message || "Erreur lors de la réclamation de la récompense"
+        error.response?.data?.message ||
+          "Erreur lors de la réclamation de la récompense"
       );
     }
   }
@@ -155,7 +160,7 @@ const referalSlice = createSlice({
         state.error.stats = action.payload as string;
       })
 
-    // History
+      // History
       .addCase(fetchReferalHistory.pending, (state) => {
         state.loading.history = true;
         state.error.history = null;
@@ -169,7 +174,7 @@ const referalSlice = createSlice({
         state.error.history = action.payload as string;
       })
 
-    // Rewards
+      // Rewards
       .addCase(fetchReferalRewards.pending, (state) => {
         state.loading.rewards = true;
         state.error.rewards = null;
@@ -183,12 +188,12 @@ const referalSlice = createSlice({
         state.error.rewards = action.payload as string;
       })
 
-    // Invite
+      // Invite
       .addCase(inviteFriends.pending, (state) => {
         state.loading.invite = true;
         state.error.invite = null;
       })
-      .addCase(inviteFriends.fulfilled, (state, action) => {
+      .addCase(inviteFriends.fulfilled, (state) => {
         state.loading.invite = false;
         state.successMessage = "Invitations envoyées avec succès !";
       })
@@ -197,7 +202,7 @@ const referalSlice = createSlice({
         state.error.invite = action.payload as string;
       })
 
-    // Claim Reward
+      // Claim Reward
       .addCase(claimReward.pending, (state) => {
         state.loading.claim = true;
         state.error.claim = null;

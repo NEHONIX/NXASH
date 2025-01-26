@@ -8,8 +8,8 @@ import "../styles/dashboard.css";
 // Importations des icônes Lucide
 import {
   BookOpen,
-  CheckCircle2,
-  PlayCircle,
+  // CheckCircle2,
+  // PlayCircle,
   TrendingUp,
   Calendar,
   Clock,

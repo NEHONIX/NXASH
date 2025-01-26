@@ -3,7 +3,7 @@ import { useAuth } from "../context/Auth_Check_context";
 import { APP_ASSETS } from "../nehonix/assets/APP_ASSETS";
 import { useNavigate } from "react-router-dom";
 import { APP_ROUTES } from "./nehonix/app.endpoints";
-import Footer from "../components/Footer";
+// import Footer from "../components/Footer";
 import { APP_CONFIG } from "../config/app.config";
 
 const Login = () => {
@@ -32,7 +32,7 @@ const Login = () => {
         matricule: formData.matricule.toUpperCase(),
       };
 
-      const res = await login(loginData);
+      await login(loginData);
       //console.log("res: ", res);
 
       // navigate(APP_ROUTES.DASHBOARD, { replace: true });
