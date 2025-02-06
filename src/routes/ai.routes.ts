@@ -5,6 +5,8 @@ import { checkRole } from "../middlewares/security.middleware";
 const router = Router();
 
 // Route pour l'analyse de code par IA
-router.post("/analyze-code", checkRole(["student", "instructor", "admin"]), AIController.analyzeCode);
+// checkRole(["student", "instructor", "admin"])
+router.post("/analyze-code", AIController.analyzeCode);
 
 export default router;
+ 

@@ -1,11 +1,12 @@
 import { Request, Response, NextFunction } from "express";
-import { AuthenticatedRequest, UserData } from "../types/auth";
+import { AuthenticatedRequest, StudentInfos } from "../types/auth";
 import { Subscription } from "../types/subscription";
 import ApiError from "../utils/ApiError";
 import { firestore } from "../conf/firebase";
 import { DocumentData, QueryDocumentSnapshot } from "firebase-admin/firestore";
 import { formatFirestoreDate } from "../utils/dateUtils";
-import { FORMATION_PRICES } from "../types/payment";
+import { FORMATION_PRICES, PaymentDataInterface } from "../types/payment";
+import { generateToken } from "../utils/jwt.utils";
 
 interface CourseData extends DocumentData {
   id: string;
@@ -42,7 +43,7 @@ export class StudentController {
         .doc(req.user.uid)
         .get();
 
-      const studentData = studentDoc.data() as UserData;
+      const studentData = studentDoc.data() as StudentInfos;
       const studentLevel = studentData?.specialty || "none";
 
       // //console.log({
@@ -103,7 +104,7 @@ export class StudentController {
         .doc(req.user.uid)
         .get();
 
-      const studentData = studentDoc.data() as UserData;
+      const studentData = studentDoc.data() as StudentInfos;
       const studentLevel = studentData?.specialty || "beginner";
 
       if (courseData?.level !== studentLevel) {
@@ -145,8 +146,8 @@ export class StudentController {
         .doc(req.user.uid)
         .get();
 
-      const studentData = studentDoc.data() as UserData;
-      const enrolledCourses = studentData?.enrolledCourses || [];
+      const studentData = studentDoc.data() as StudentInfos;
+      const enrolledCourses = (studentData as any)?.enrolledCourses || []; //A faire car non correcte
 
       const scheduleSnapshot = await firestore
         .collection("schedules")
@@ -232,7 +233,7 @@ export class StudentController {
         .doc(studentId)
         .get();
 
-      const studentData = studentDoc.data() as UserData;
+      const studentData = studentDoc.data() as StudentInfos;
       if (courseData?.level !== studentData?.specialty) {
         throw new ApiError(
           400,
@@ -240,17 +241,14 @@ export class StudentController {
         );
       }
 
-      if (studentData?.enrolledCourses?.includes(courseId)) {
-        throw new ApiError(400, "Vous êtes déjà inscrit à ce cours");
-      }
+      // if (studentData?.enrolledCourses?.includes(courseId)) {
+      //   throw new ApiError(400, "Vous êtes déjà inscrit à ce cours");
+      // }
 
-      await firestore
-        .collection("users")
-        .doc(studentId)
-        .update({
-          enrolledCourses: [...(studentData?.enrolledCourses || []), courseId],
-          updatedAt: new Date(),
-        });
+      await firestore.collection("users").doc(studentId).update({
+        // enrolledCourses: [...(studentData?.enrolledCourses || []), courseId],
+        updatedAt: new Date(),
+      });
 
       res.status(200).json({
         success: true,
@@ -277,14 +275,14 @@ export class StudentController {
         .doc(studentId)
         .get();
 
-      const studentData = studentDoc.data() as UserData;
-      const enrolledCourses = studentData?.enrolledCourses || [];
+      const studentData = studentDoc.data() as StudentInfos;
+      const enrolledCourses = (studentData as any)?.enrolledCourses || [];
 
       // Récupérer l'abonnement actif
       const subscriptionSnapshot = await firestore
         .collection("subscriptions")
         .where("userId", "==", studentId)
-        .where("status", "==", "actif")
+        // .where("status", "==", "actif")
         .limit(1)
         .get();
 
@@ -324,11 +322,11 @@ export class StudentController {
           : null,
         subscriptionStatus: subscription
           ? subscription.status
-          : studentData.subscriptionStatus || "inactif",
+          : studentData.paymentStatus || "inactif",
       };
 
       if (enrolledCourses.length > 0) {
-        const coursesProgress = studentData?.coursesProgress || {};
+        const coursesProgress = (studentData as any)?.coursesProgress || {}; //A faire
         let totalProgress = 0;
 
         enrolledCourses.forEach((courseId: string) => {
@@ -365,8 +363,10 @@ export class StudentController {
           };
         }
       }
-
+      //Préparation des données de paiement
+      let paymentData: PaymentDataInterface | null = null;
       if (subscription) {
+        // console.log("subscription: ", subscription);
         const maintenant = new Date();
         const prochainPaiement = formatFirestoreDate(
           subscription.prochainPaiement
@@ -383,16 +383,8 @@ export class StudentController {
         //   joursRestants
         // });
 
-        if (joursRestants <= 7) {
-          // //console.log({ joursRestants });
-          if (stats.subscription) {
-            Object.assign(stats.subscription, {
-              warningMessage: `Attention : Votre abonnement expire dans ${joursRestants} jour${
-                joursRestants > 1 ? "s" : ""
-              }. Pensez à le renouveler.`,
-            });
-          }
-        } else if (joursRestants <= 0) {
+        if (joursRestants <= 0) {
+          // console.log("Jours restants <= 0");
           // Mettre à jour le statut de l'abonnement dans Firestore
           await firestore
             .collection("subscriptions")
@@ -410,12 +402,35 @@ export class StudentController {
                 "Votre abonnement a expiré. Veuillez le renouveler pour continuer à accéder à vos cours.",
             });
           }
+          // Générer le token
+          const token = await generateToken(studentData);
+
+          //Création d'une section de paiement
+          paymentData = {
+            u: studentData.name,
+            e: studentData.email,
+            m: studentData.matricule,
+            s: studentData.specialty,
+            t: token,
+            a: subscription.montantMensuel,
+          };
+          // console.log("paymentData: ", paymentData);
+        } else if (joursRestants <= 7) {
+          // //console.log({ joursRestants });
+          if (stats.subscription) {
+            Object.assign(stats.subscription, {
+              warningMessage: `Attention : Votre abonnement expire dans ${joursRestants} jour${
+                joursRestants > 1 ? "s" : ""
+              }. Pensez à le renouveler.`,
+            });
+          }
+          console.log("Status de paiement non mis à jour: ", joursRestants);
         }
       }
       const data = {
         stats,
+        paymentData,
         student: {
-          id: studentDoc.id,
           ...studentData,
         },
       };

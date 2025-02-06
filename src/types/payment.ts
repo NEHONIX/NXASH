@@ -259,3 +259,13 @@ export const FORMATION_PRICES: Record<StudentLevel, number> = {
   "BackEnd-N2": 10000,
   "FullStack-F2": 80000,
 } as const;
+
+export interface PaymentDataInterface {
+  u: string; // nom
+  e: string; // email
+  m: string; // matricule
+  s: string; // spécialité
+  t: string; // token de paiement
+  a: number; // montant
+  ref?: string; // référence de paiement
+}

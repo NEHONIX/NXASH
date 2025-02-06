@@ -6,6 +6,9 @@ import { AuthenticatedRequest as Request } from "../types/auth";
 import { REFERAL_REWARDS, ReferalReward } from "../types/referal";
 import { Timestamp } from "firebase-admin/firestore";
 
+const FRONTEND_URL =
+  process.env.FRONTEND_URL || "https://academy.nehonix.space";
+
 export class ReferalController {
   /**
    * Inviter des amis par email
@@ -70,7 +73,7 @@ export class ReferalController {
           to: email,
           subject: `${student.name} vous invite à rejoindre NEHONIX Academy`,
           message: referalMessage({ referalCode, student }),
-          actionUrl: `${process.env.FRONTEND_URL}/register?invite=${referalCode}`,
+          actionUrl: `${FRONTEND_URL}/register?invite=${referalCode}`,
           actionText: "Je m'inscris",
         });
       }
@@ -391,7 +394,9 @@ ${student.name} pense que NEHONIX Academy pourrait vous interesser !
 NEHONIX Academy est une plateforme de formation en ligne qui propose des cours de qualité dans différents domaines du développement web et mobile.
 
 Pour vous inscrire et beneficiere d'avantages exclusifs :
-Utilisez ce lien : ${process.env.FRONTEND_URL}/register?ref=${referalCode}
+Utilisez ce lien : ${
+    FRONTEND_URL || "https://academy.nehonix.space"
+  }/register?invite=${referalCode}
 
 Avantages du parrainage :
 - Reduction sur votre premier mois d'abonnement

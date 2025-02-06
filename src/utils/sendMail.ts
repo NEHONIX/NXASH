@@ -1,4 +1,3 @@
-import nodeMailer from "nodemailer";
 import { SERVER_ASSETS } from "./assets/server_assets";
 import { IUser } from "../types/model";
 import { getTemplate } from "./lib/getTemplate.lib";
@@ -104,7 +103,7 @@ export const sendPasswordResetEmail = async (
 // };
 
 interface SendMailT {
-  from: string;
+  from?: string;
   to: string;
   subject: string;
   title?: string;

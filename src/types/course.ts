@@ -52,6 +52,7 @@ export interface Course {
   courseUrl: string; // URL du contenu principal
   courseUrlType: CourseUrlType; // Type de contenu (vidéo/document)
   thumbnail: string; // URL de l'image de couverture
+  profName: string | undefined
 }
 
 /**

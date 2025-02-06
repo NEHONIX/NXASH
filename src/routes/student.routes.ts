@@ -3,6 +3,9 @@ import { authMiddleware } from "../middlewares/auth.middleware";
 import { AuthController } from "../controllers/auth.controller";
 import { StudentController } from "../controllers/student.controller";
 import referalsRouter from "./referals.routes";
+import { addComment } from "./comments/add-comment";
+import { getComments } from "./comments/get-comments";
+import { deleteComment } from "./comments/delete-comment";
 
 const router: any = Router();
 
@@ -93,5 +96,19 @@ router.post(
 );
 
 router.use("/dashboard/referals", referalsRouter);
+
+// Like/Unlike a course
+// router.post("/:courseId/like", likeCourse);
+
+// Comments
+router.post("/:courseId/comments", authMiddleware, addComment);
+router.get("/:courseId/comments", authMiddleware, getComments);
+router.delete("/comments/:commentId", authMiddleware, deleteComment);
+
+/**
+ * @route   POST /api/student/dashboard/subscription/renew
+ * @desc    Renouveler l'abonnement de l'étudiant
+ * @access  Private (Student only)
+ */
 
 export default router;

@@ -9,8 +9,8 @@ doteven.config();
 
 // Rate limiting
 export const limiter = rateLimit({
-  windowMs: 15 * 60 * 1000, // 15 minutes
-  max: 300, // Limite chaque IP à 300 requêtes par fenêtre
+  windowMs: 1 * 60 * 1000, // 15 minutes
+  max: 500, // Limite chaque IP à 300 requêtes par fenêtre
   message:
     "Trop de requêtes depuis cette IP, veuillez réessayer après 15 minutes",
 });
@@ -55,8 +55,8 @@ const allowedOrigins = [
   "https://academy.nehonix.space",
   "https://www.nehonix.space",
   "https://nehonix.space",
-   "https://admin-prof.nehonix.space",
-   "https://www.admin-prof.nehonix.space",
+  "https://admin-prof.nehonix.space",
+  "https://www.admin-prof.nehonix.space",
 ];
 
 export const corsMiddleware = cors({

@@ -46,6 +46,7 @@ export class CoursesController {
         courseUrlType: courseData.courseUrlType || "video",
         thumbnail: courseData.thumbnail || "",
         publishedAt: courseData.publishedAt || new Date(),
+        profName: req.user?.name,
       };
 
       const courseRef = await firestore.collection("courses").add(course);

@@ -1,0 +1,48 @@
+import { Request, Response, NextFunction } from "express";
+import { database } from "../../conf/firebase";
+
+export const likeCourse = async (
+  req: Request,
+  res: Response,
+  next: NextFunction
+) => {
+  try {
+    const { courseId } = req.params;
+    const studentId = req.student?.id;
+    const studentName = req.student?.name;
+
+    if (!studentId || !studentName) {
+      return ResponseHandler.unauthorized(res);
+    }
+
+    const courseRef = database.ref(`/published-courses/public/${courseId}`);
+    const likesRef = database.ref(`/course-likes/${courseId}/${studentId}`);
+
+    // Vérifier si l'étudiant a déjà liké le cours
+    const likeSnapshot = await likesRef.once("value");
+    const hasLiked = likeSnapshot.exists();
+
+    if (hasLiked) {
+      // Unlike le cours
+      await likesRef.remove();
+      await courseRef.child("likes").transaction((currentLikes) => {
+        return (currentLikes || 0) - 1;
+      });
+
+      return ResponseHandler.success(res, null, "Like retiré avec succès");
+    } else {
+      // Like le cours
+      await likesRef.set({
+        timestamp: Date.now(),
+        studentName,
+      });
+      await courseRef.child("likes").transaction((currentLikes) => {
+        return (currentLikes || 0) + 1;
+      });
+
+      return ResponseHandler.success(res, null, "Cours liké avec succès");
+    }
+  } catch (error) {
+    next(error);
+  }
+};
