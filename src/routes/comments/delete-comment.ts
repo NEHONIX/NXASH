@@ -46,7 +46,7 @@ export const deleteComment = async (
       "Commentaire supprimé avec succès"
     );
   } catch (error) {
-    console.log("Error deleting comment:", error);
+    //console.log("Error deleting comment:", error);
     next(error);
   }
 };

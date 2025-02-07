@@ -27,6 +27,7 @@ export const VALID_STUDENT_LEVELS = {
   FULLSTACK_F2: "FullStack-F2" as StudentLevel,
 } as const;
 
+
 /**
  * Interface principale représentant un cours complet
  * Contient toutes les informations nécessaires pour afficher et gérer un cours
@@ -52,7 +53,7 @@ export interface Course {
   courseUrl: string; // URL du contenu principal
   courseUrlType: CourseUrlType; // Type de contenu (vidéo/document)
   thumbnail: string; // URL de l'image de couverture
-  profName: string | undefined
+  profName: string | undefined;
 }
 
 /**

@@ -6,9 +6,9 @@ import referalsRouter from "./referals.routes";
 import { addComment } from "./comments/add-comment";
 import { getComments } from "./comments/get-comments";
 import { deleteComment } from "./comments/delete-comment";
+import nehonixRouter from "./nehonix.routes";
 
 const router: any = Router();
-
 /**
  * @route   POST /api/student/auth/register
  * @desc    Inscription d'un nouvel étudiant
@@ -106,9 +106,10 @@ router.get("/:courseId/comments", authMiddleware, getComments);
 router.delete("/comments/:commentId", authMiddleware, deleteComment);
 
 /**
- * @route   POST /api/student/dashboard/subscription/renew
+ * @route   POST /api/student/nehonix-labs
  * @desc    Renouveler l'abonnement de l'étudiant
  * @access  Private (Student only)
  */
+router.use("/nehonix-labs", nehonixRouter);// /api/student/nehonix-labs/ai/generate-exo
 
 export default router;

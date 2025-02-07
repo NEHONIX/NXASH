@@ -15,7 +15,7 @@ import {
 import { errorConverter, errorHandler } from "./middlewares/error.middleware";
 import ApiError from "./utils/ApiError";
 import router from "./routes";
-   
+
 dotenv.config();
 
 const app = express();
@@ -66,4 +66,3 @@ process.on("uncaughtException", (err: Error) => {
 http.createServer(app).listen(PORT, () => {
   console.log(`NEHONIX Server started on port:${PORT}`);
 });
- 

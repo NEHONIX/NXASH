@@ -1101,3 +1101,47 @@ export class CoursesController {
     }
   }
 }
+
+/**
+ *  // Créer un tableau de promesses pour l'envoi des emails
+    const notificationPromises = usersSnapshot.docs.map(async (doc) => {
+      const userData = doc.data() as IUser;
+      
+      const mailOptions = {
+        from: "NXASH - Nouveau cours",
+        to: userData.email,
+        subject: `Nouveau cours disponible: ${courseTitle}`,
+        text: `
+Bonjour ${userData.name},
+
+Un nouveau cours intitulé "${courseTitle}" est maintenant disponible dans votre spécialité (${courseLevel}).
+
+Description: ${courseDescription}
+
+Connectez-vous à votre espace pour commencer à apprendre !
+
+Cordialement,
+L'équipe de formation
+        `.trim()
+      };
+
+      try {
+        await sendMailNotification({
+          from: mailOptions.from,
+          to: mailOptions.to,
+          subject: mailOptions.subject,
+          message: mailOptions.text,
+        });
+        successCount++;
+      } catch (error) {
+        console.error(`Échec d'envoi de notification à ${userData.email}:`, error);
+        failedCount++;
+      }
+    });
+
+    // Attendre que tous les emails soient envoyés
+    await Promise.all(notificationPromises);
+
+    console.log(`Notifications envoyées avec succès à ${successCount} étudiants`);
+    console.log(`Échec d'envoi pour ${failedCount} étudiants`);
+ */
