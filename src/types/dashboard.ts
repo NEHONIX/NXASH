@@ -1,5 +1,5 @@
 import { SubscriptionStatus } from "./subscription";
-import { UserData } from "./auth";
+import { StudentInfos as UserData } from "./auth";
 
 export interface DashboardSubscriptionInfo {
   id: string;
@@ -66,7 +66,7 @@ export interface NextLesson {
   date: string;
   time: string;
   courseId: string;
-  courseName: string; 
+  courseName: string;
   instructorName: string;
 }
 

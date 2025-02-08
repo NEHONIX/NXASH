@@ -7,7 +7,12 @@ import { addComment } from "./comments/add-comment";
 import { getComments } from "./comments/get-comments";
 import { deleteComment } from "./comments/delete-comment";
 import nehonixRouter from "./nehonix.routes";
-import { AIController } from "../controllers/ai.controller";
+import {
+  AIController as Ai,
+  generateProgrammingExercise,
+} from "../controllers/ai.controller";
+
+const AIController = new Ai();
 
 const router: any = Router();
 /**
@@ -115,7 +120,7 @@ router.delete("/comments/:commentId", authMiddleware, deleteComment);
 router.post(
   "/nehonix-labs/ai/generate-exo",
   authMiddleware,
-  AIController.generateProgrammingExercise
+  generateProgrammingExercise
 ); // /api/student/nehonix-labs/ai/generate-exo
 
 export default router;
