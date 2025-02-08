@@ -61,17 +61,26 @@ const allowedOrigins = [
 
 export const corsMiddleware = cors({
   origin: (origin, callback) => {
-    if (!origin || allowedOrigins.includes(origin)) {
-      callback(null, true);
+    if (!origin) {
+      // Accepter les requêtes sans origin (ex: Postman, requêtes internes)
+      return callback(null, true);
+    }
+
+    const allowedRegex =
+      /^(https?:\/\/)?(localhost(:\d{1,5})?|[\w-]+\.nehonix\.space)$/;
+
+    if (allowedRegex.test(origin)) {
+      return callback(null, true);
     } else {
-      callback(new Error("Non autorisé par CORS"));
+      console.error("CORS bloqué pour :", origin); // Debugging
+      return callback(new Error("Non autorisé par CORS"));
     }
   },
   methods: ["GET", "POST", "PUT", "DELETE", "PATCH"],
   allowedHeaders: ["Content-Type", "Authorization"],
   exposedHeaders: ["Content-Range", "X-Content-Range"],
   credentials: true,
-  maxAge: 600, // 10 minutes
+  maxAge: 600, // 10 min
 });
 
 // Compression
