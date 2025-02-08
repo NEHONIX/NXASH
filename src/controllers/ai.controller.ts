@@ -60,16 +60,20 @@ export class AIController {
       const { course, level, courseId } = req.body.course as {
         course: string;
         level: string;
-        courseId: string | undefined;
+        courseId: string;
       };
 
       //console.log({ course, level, courseId });
 
       if (!course || !level || !courseId) {
-        throw new ApiError(
-          400,
-          "Le contenu du cours, le niveau, l'id du cours sont requis"
-        );
+        // throw new ApiError(
+        //   400,
+        //   "Le contenu du cours, le niveau, l'id du cours sont requis"
+        // );
+        return res.status(400).json({
+          message: "Le contenu du cours, le niveau, l'id du cours sont requis",
+          data: { course, level, courseId },
+        });
       }
 
       const refDb = database.ref(`quiz/${level}/${req.user.uid}/${courseId}`);
@@ -131,9 +135,9 @@ export class AIController {
         prompt: exercisePrompt,
       });
 
-      const exercise = response.data.candidates[0].content.parts[0].text;
+      const exercise = await response.data.candidates[0].content.parts[0].text;
 
-      const cleanIAOutPut = cleanJSON(exercise);
+      const cleanIAOutPut =  cleanJSON(exercise);
       const convertJsonToObj = extractJSON(cleanIAOutPut);
 
       await refDb.set(convertJsonToObj);
