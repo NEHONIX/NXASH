@@ -61,27 +61,18 @@ const allowedOrigins = [
 
 export const corsMiddleware = cors({
   origin: (origin, callback) => {
-    if (!origin) {
-      return callback(null, true); // Autorise les requêtes sans origin (Postman, requêtes serveur)
-    }
-
-    const allowedRegex = /^(https?:\/\/)?([\w-]+\.)?nehonix\.space$/; // Gère tous les sous-domaines
-    const localRegex = /^(https?:\/\/)?(localhost|127\.0\.0\.1)(:\d{1,5})?$/; // Gère localhost avec port
-
-    if (allowedRegex.test(origin) || localRegex.test(origin)) {
-      return callback(null, true);
+    if (!origin || allowedOrigins.includes(origin)) {
+      callback(null, true);
     } else {
-      console.error("CORS bloqué pour :", origin); // Debugging
-      return callback(new Error("Non autorisé par CORS"));
+      callback(new Error("Non autorisé par CORS"));
     }
   },
   methods: ["GET", "POST", "PUT", "DELETE", "PATCH"],
   allowedHeaders: ["Content-Type", "Authorization"],
   exposedHeaders: ["Content-Range", "X-Content-Range"],
   credentials: true,
-  maxAge: 600, // 10 min
+  maxAge: 600, // 10 minutes
 });
-
 
 // Compression
 export const compressionMiddleware = compression();
