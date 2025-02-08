@@ -7,12 +7,7 @@ import { addComment } from "./comments/add-comment";
 import { getComments } from "./comments/get-comments";
 import { deleteComment } from "./comments/delete-comment";
 import nehonixRouter from "./nehonix.routes";
-import {
-  AIController as Ai,
-  generateProgrammingExercise,
-} from "../controllers/ai.controller";
-
-const AIController = new Ai();
+import { AIController as Ai } from "../controllers/ai.controller";
 
 const router: any = Router();
 /**
@@ -112,15 +107,10 @@ router.get("/:courseId/comments", authMiddleware, getComments);
 router.delete("/comments/:commentId", authMiddleware, deleteComment);
 
 /**
- * @route   POST /api/student/nehonix-labs
- * @desc    Renouveler l'abonnement de l'étudiant
+ * @route   POST /api/student/nehonix-labs/ai/generate-exo
+ * @desc    Générer un exercice basé sur un cours
  * @access  Private (Student only)
  */
-// router.use("/nehonix-labs", nehonixRouter);// /api/student/nehonix-labs/ai/generate-exo
-router.post(
-  "/nehonix-labs/ai/generate-exo",
-  authMiddleware,
-  generateProgrammingExercise
-); // /api/student/nehonix-labs/ai/generate-exo
+router.use("/nehonix-labs", nehonixRouter);
 
 export default router;
