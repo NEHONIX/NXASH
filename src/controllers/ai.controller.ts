@@ -58,25 +58,29 @@ export class AIController {
     next: NextFunction
   ) {
     try {
-      const { course, level, courseId } = req.body.course as {
-        course: string;
-        level: string;
-        courseId: string;
-      };
+      const courseData = req.body;
+      const { course, level, courseId } = courseData;
 
-      //console.log({ course, level, courseId });
+      console.log("Données reçues:", {
+        courseData,
+        extracted: { course, level, courseId }
+      });
 
       if (!course || !level || !courseId) {
-        // throw new ApiError(
-        //   400,
-        //   "Le contenu du cours, le niveau, l'id du cours sont requis"
-        // );
-        console.log(
-          "Le contenu du cours, le niveau, l'id du cours sont requis"
-        );
+        console.log("Validation échouée:", {
+          course: !course ? "manquant" : "présent",
+          level: !level ? "manquant" : "présent",
+          courseId: !courseId ? "manquant" : "présent"
+        });
+        
         return res.status(400).json({
+          success: false,
           message: "Le contenu du cours, le niveau, l'id du cours sont requis",
-          data: { course, level, courseId },
+          validation: {
+            course: !course ? "manquant" : "présent",
+            level: !level ? "manquant" : "présent",
+            courseId: !courseId ? "manquant" : "présent"
+          }
         });
       }
 
@@ -165,23 +169,29 @@ export async function generateProgrammingExercise(
   next: NextFunction
 ) {
   try {
-    const { course, level, courseId } = req.body.course as {
-      course: string;
-      level: string;
-      courseId: string;
-    };
+    const courseData = req.body;
+    const { course, level, courseId } = courseData;
 
-    //console.log({ course, level, courseId });
+    console.log("Données reçues:", {
+      courseData,
+      extracted: { course, level, courseId }
+    });
 
     if (!course || !level || !courseId) {
-      // throw new ApiError(
-      //   400,
-      //   "Le contenu du cours, le niveau, l'id du cours sont requis"
-      // );
-      console.log("Le contenu du cours, le niveau, l'id du cours sont requis");
+      console.log("Validation échouée:", {
+        course: !course ? "manquant" : "présent",
+        level: !level ? "manquant" : "présent",
+        courseId: !courseId ? "manquant" : "présent"
+      });
+      
       return res.status(400).json({
+        success: false,
         message: "Le contenu du cours, le niveau, l'id du cours sont requis",
-        data: { course, level, courseId },
+        validation: {
+          course: !course ? "manquant" : "présent",
+          level: !level ? "manquant" : "présent",
+          courseId: !courseId ? "manquant" : "présent"
+        }
       });
     }
 
