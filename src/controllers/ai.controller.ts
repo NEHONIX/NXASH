@@ -63,24 +63,24 @@ export class AIController {
 
       console.log("Données reçues:", {
         courseData,
-        extracted: { course, level, courseId }
+        extracted: { course, level, courseId },
       });
 
       if (!course || !level || !courseId) {
         console.log("Validation échouée:", {
           course: !course ? "manquant" : "présent",
           level: !level ? "manquant" : "présent",
-          courseId: !courseId ? "manquant" : "présent"
+          courseId: !courseId ? "manquant" : "présent",
         });
-        
+
         return res.status(400).json({
           success: false,
           message: "Le contenu du cours, le niveau, l'id du cours sont requis",
           validation: {
             course: !course ? "manquant" : "présent",
             level: !level ? "manquant" : "présent",
-            courseId: !courseId ? "manquant" : "présent"
-          }
+            courseId: !courseId ? "manquant" : "présent",
+          },
         });
       }
 
@@ -138,12 +138,22 @@ export class AIController {
   - **Si une réponse ou une question contient du code, elle doit toujours être entourée de [nehonix.printCode]...[/nehonix.printCode].**
   **Retourne directement le JSON sans mise en forme Markdown.**
 `;
+      let exercise;
+      try {
+        const response = await GEMINI_AI_REQUEST({
+          prompt: exercisePrompt,
+        });
 
-      const response = await GEMINI_AI_REQUEST({
-        prompt: exercisePrompt,
-      });
-
-      const exercise = await response.data.candidates[0].content.parts[0].text;
+        const exoResponse = await response.data.candidates[0].content.parts[0]
+          .text;
+        exercise = exoResponse;
+      } catch (error: any) {
+        return res.status(500).json({
+          message:
+            "Nous avons eu un problème lors de la création de l'exercice.",
+          error,
+        });
+      }
 
       const cleanIAOutPut = cleanJSON(exercise);
       const convertJsonToObj = extractJSON(cleanIAOutPut);
@@ -174,24 +184,24 @@ export async function generateProgrammingExercise(
 
     console.log("Données reçues:", {
       courseData,
-      extracted: { course, level, courseId }
+      extracted: { course, level, courseId },
     });
 
     if (!course || !level || !courseId) {
       console.log("Validation échouée:", {
         course: !course ? "manquant" : "présent",
         level: !level ? "manquant" : "présent",
-        courseId: !courseId ? "manquant" : "présent"
+        courseId: !courseId ? "manquant" : "présent",
       });
-      
+
       return res.status(400).json({
         success: false,
         message: "Le contenu du cours, le niveau, l'id du cours sont requis",
         validation: {
           course: !course ? "manquant" : "présent",
           level: !level ? "manquant" : "présent",
-          courseId: !courseId ? "manquant" : "présent"
-        }
+          courseId: !courseId ? "manquant" : "présent",
+        },
       });
     }
 
