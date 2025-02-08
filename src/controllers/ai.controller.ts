@@ -104,8 +104,8 @@ export class AIController {
     ### Niveau de l'élève :
     - Spécialité : ${["FrontEnd", "BackEnd", "FullStack"].join(", ")}
     - Niveau : ${Object.keys(VALID_STUDENT_LEVELS).join(
-        ", "
-      )} (Débutant, Intermédiaire, Avancé)
+      ", "
+    )} (Débutant, Intermédiaire, Avancé)
 
   ### Contraintes :
   - Chaque exercice doit comporter **10 questions maximum**.
@@ -117,7 +117,9 @@ export class AIController {
     - Note : \`[nehonix.writeNote]Note informative[/nehonix.writeNote]\`
     - Définition : \`[nehonix.printDef]Définition ici[/nehonix.printDef]\`
     - Exemple : \`[nehonix.printEx]Exemple de code[/nehonix.printEx]\`
-
+    Pour le code, tu peux passer une valeur optionnnelle pour indiquer le langage
+    (par défaut c'est javscript). Exemple: [nehonix.printCode:javascript]console.log('Hello')[/nehonix.printCode] ou
+    [nehonix.printCode:python]Print('Hello world')[/nehonix.printCode]
   ### Format de sortie :
   {
     "title": "Titre de l'exercice",
@@ -144,11 +146,13 @@ export class AIController {
           prompt: exercisePrompt,
         });
 
-        const exoResponse = await response.data.candidates[0].content.parts[0].text;
+        const exoResponse = await response.data.candidates[0].content.parts[0]
+          .text;
         exercise = exoResponse;
       } catch (error: any) {
         return res.status(500).json({
-          message: "Nous avons eu un problème lors de la création de l'exercice.",
+          message:
+            "Nous avons eu un problème lors de la création de l'exercice.",
           error,
         });
       }
