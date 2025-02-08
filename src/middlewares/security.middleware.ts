@@ -62,14 +62,13 @@ const allowedOrigins = [
 export const corsMiddleware = cors({
   origin: (origin, callback) => {
     if (!origin) {
-      // Accepter les requêtes sans origin (ex: Postman, requêtes internes)
-      return callback(null, true);
+      return callback(null, true); // Autorise les requêtes sans origin (Postman, requêtes serveur)
     }
 
-    const allowedRegex =
-      /^(https?:\/\/)?(localhost(:\d{1,5})?|[\w-]+\.nehonix\.space)$/;
+    const allowedRegex = /^(https?:\/\/)?([\w-]+\.)?nehonix\.space$/; // Gère tous les sous-domaines
+    const localRegex = /^(https?:\/\/)?(localhost|127\.0\.0\.1)(:\d{1,5})?$/; // Gère localhost avec port
 
-    if (allowedRegex.test(origin)) {
+    if (allowedRegex.test(origin) || localRegex.test(origin)) {
       return callback(null, true);
     } else {
       console.error("CORS bloqué pour :", origin); // Debugging
@@ -82,6 +81,7 @@ export const corsMiddleware = cors({
   credentials: true,
   maxAge: 600, // 10 min
 });
+
 
 // Compression
 export const compressionMiddleware = compression();
