@@ -114,6 +114,7 @@ router.delete("/comments/:commentId", authMiddleware, deleteComment);
 // router.use("/nehonix-labs", nehonixRouter);// /api/student/nehonix-labs/ai/generate-exo
 router.post(
   "/api/student/nehonix-labs/ai/generate-exo",
+  authMiddleware,
   AIController.generateProgrammingExercise
 ); // /api/student/nehonix-labs/ai/generate-exo
 
