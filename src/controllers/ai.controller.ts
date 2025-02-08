@@ -70,6 +70,9 @@ export class AIController {
         //   400,
         //   "Le contenu du cours, le niveau, l'id du cours sont requis"
         // );
+        console.log(
+          "Le contenu du cours, le niveau, l'id du cours sont requis"
+        );
         return res.status(400).json({
           message: "Le contenu du cours, le niveau, l'id du cours sont requis",
           data: { course, level, courseId },
@@ -137,11 +140,12 @@ export class AIController {
 
       const exercise = await response.data.candidates[0].content.parts[0].text;
 
-      const cleanIAOutPut =  cleanJSON(exercise);
+      const cleanIAOutPut = cleanJSON(exercise);
       const convertJsonToObj = extractJSON(cleanIAOutPut);
 
       await refDb.set(convertJsonToObj);
 
+      console.log("Exo envoyé")
       res.status(200).json({
         success: true,
         data: {
