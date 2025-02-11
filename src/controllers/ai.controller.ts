@@ -61,18 +61,7 @@ export class AIController {
       const courseData = req.body;
       const { course, level, courseId } = courseData;
 
-      console.log("Données reçues:", {
-        courseData,
-        extracted: { course, level, courseId },
-      });
-
       if (!course || !level || !courseId) {
-        console.log("Validation échouée:", {
-          course: !course ? "manquant" : "présent",
-          level: !level ? "manquant" : "présent",
-          courseId: !courseId ? "manquant" : "présent",
-        });
-
         return res.status(400).json({
           success: false,
           message: "Le contenu du cours, le niveau, l'id du cours sont requis",
@@ -108,7 +97,7 @@ export class AIController {
     )} (Débutant, Intermédiaire, Avancé)
 
   ### Contraintes :
-  - Chaque exercice doit comporter **10 questions maximum**.
+  - Chaque exercice doit comporter **15 questions minimum et 20** questions maximum**.
   - **Format JSON strict** sans texte superflu.
   - **Utilise les balises suivantes pour formater les éléments :**  
     - Code : \`[nehonix.printCode]console.log('Hello')[/nehonix.printCode]\`
@@ -162,11 +151,151 @@ export class AIController {
 
       await refDb.set(convertJsonToObj);
 
-      console.log("Exo envoyé");
       res.status(200).json({
         success: true,
         data: {
           exercise: convertJsonToObj,
+        },
+      });
+    } catch (error) {
+      next(error);
+    }
+  }
+
+  /**
+   *@function generateExplainingCourse
+   * @param req
+   * @param res
+   * @param next
+   * @returns
+   * ça permet d'avoir un cours explicatif pour un cours
+   */
+  static async generateExplainingCourse(
+    req: Request & AuthenticatedRequest,
+    res: Response,
+    next: NextFunction
+  ) {
+    try {
+      const courseData = req.body;
+      const { course, level, courseId } = courseData;
+
+      if (!course || !level || !courseId) {
+        return res.status(400).json({
+          success: false,
+          message: "Le contenu du cours, le niveau, l'id du cours sont requis",
+          validation: {
+            course: !course ? "manquant" : "présent",
+            level: !level ? "manquant" : "présent",
+            courseId: !courseId ? "manquant" : "présent",
+          },
+        });
+      }
+
+      const refDb = database.ref(
+        `explained-course/${level}/${req.user.uid}/${courseId}`
+      );
+
+      if ((await refDb.once("value")).exists()) {
+        const data = (await refDb.once("value")).val();
+        res.status(201).json({
+          message: "Un cours explicatif a été généré pour ce cours",
+          data: {
+            explanation: data,
+          },
+        });
+        return;
+      }
+
+      const coursePrompt = `
+    Tu es un mentor en programmation. Donne une explication appronfondi et très détailé sur le cours suivant :
+    "${course}" il faut t'assurer et faire tout le neccessaire  de sorte que l'élève (étudiant) puisse 
+    comprendre le cours qu'il a eu aujourd'hui!
+
+    ### Niveau de l'élève :
+    - Spécialité : ${["FrontEnd", "BackEnd", "FullStack"].join(", ")}
+    - Niveau : ${Object.keys(VALID_STUDENT_LEVELS).join(
+      ", "
+    )} (Débutant, Intermédiaire, Avancé)
+
+  ### Contraintes :
+  - Chaque explication doit se fait illustré par des exemples et des questions, soit **4 questions maximum**.
+  - **Format JSON strict** sans texte superflu.
+  - **Utilise les balises suivantes pour formater les éléments :**  
+    - Code : \`[nehonix.printCode]console.log('Hello')[/nehonix.printCode]\`
+    - Important : \`[nehonix.writeImportant]Texte important[/nehonix.writeImportant]\`
+    - Avertissement : \`[nehonix.writeWarning]Attention[/nehonix.writeWarning]\`
+    - Note : \`[nehonix.writeNote]Note informative[/nehonix.writeNote]\`
+    - Définition : \`[nehonix.printDef]Définition ici[/nehonix.printDef]\` pas writeDef mais printDef
+    - Exemple : \`[nehonix.printEx]Exemple de code[/nehonix.printEx]\`
+    Pour le code, tu peux passer une valeur optionnnelle pour indiquer le langage
+    (par défaut c'est javscript). Exemple: [nehonix.printCode:javascript]console.log('Hello')[/nehonix.printCode] ou
+    [nehonix.printCode:python]Print('Hello world')[/nehonix.printCode]
+  ### Format de sortie :
+  {
+    "title": "Titre du cours expliqué",
+    "target": "Objectif pédagogique",
+    "explanation": {
+  // Introduction générale du sujet de cours (ex: définition du DOM)
+  introduction: string;
+
+  // Tableau des concepts clés, chacun avec un titre et un contenu détaillé
+  // Permet de structurer les points importants à comprendre
+  concepts_cles: {
+  // Titre court et descriptif du concept
+  title: string;
+
+  // Explication détaillée du concept
+  content: string;
+}
+
+
+  // Exemple de code ou d'illustration pratique du concept
+  // Aide à comprendre concrètement le sujet 
+  exemple: string;
+  // Tableau de questions-réponses pour tester et approfondir la compréhension
+  // Chaque entrée contient une question et sa réponse correspondante
+  questions: {
+    question: string; // La question posée
+    answer: string; // La réponse détaillée
+  }[];
+}
+  }
+
+  ### Règles :
+  - **Ne génère aucun texte en dehors du JSON.**
+  - tu dois obligatoirement à chaque fois illustrer tes explications
+  -tu dois toujours t'assurer que les mots clés utilisés pour les formatages sont correctes (pas d'espace entre les balises exemple: [nehonix.prinCode ]...)
+  - **Assure-toi que toutes les parties importantes du cours gardent leur mise en forme avec les balises personnalisées.**
+  - **Si une réponse ou une question contient du code, elle doit toujours être entourée de [nehonix.printCode]...[/nehonix.printCode].**
+  **Retourne directement le JSON sans mise en forme Markdown.**
+`;
+      let explanation;
+      try {
+        const response = await GEMINI_AI_REQUEST({
+          prompt: coursePrompt,
+        });
+
+        const explanationResponse = await response.data.candidates[0].content
+          .parts[0].text;
+        explanation = explanationResponse;
+      } catch (error: any) {
+        return res.status(500).json({
+          message:
+            "Nous avons eu un problème lors de l'explication pour le cours avec l'id " +
+            courseId,
+          error,
+        });
+      }
+
+      const cleanIAOutPut = cleanJSON(explanation);
+      const convertJsonToObj = extractJSON(cleanIAOutPut);
+
+      await refDb.set(convertJsonToObj);
+
+      res.status(200).json({
+        success: true,
+        data: {
+          explanation: convertJsonToObj,
         },
       });
     } catch (error) {

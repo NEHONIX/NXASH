@@ -8,5 +8,6 @@ const router: any = Router();
 // checkRole(["student", "instructor", "admin"])
 router.post("/analyze-code", AIController.analyzeCode);
 router.post("/generate-exo", AIController.generateProgrammingExercise);
+router.post("/explain-course", AIController.generateExplainingCourse);
 
 export default router;
