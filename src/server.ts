@@ -3,8 +3,7 @@ import express, { Request, Response, NextFunction } from "express";
 import dotenv from "dotenv";
 import http from "http";
 import cookieParser from "cookie-parser";
-import authRoutes from "./routes/auth.routes";
-import coursesRoutes from "./routes/courses.routes";
+import crypto from "crypto";
 import {
   limiter,
   helmetMiddleware,
@@ -15,6 +14,8 @@ import {
 import { errorConverter, errorHandler } from "./middlewares/error.middleware";
 import ApiError from "./utils/ApiError";
 import router from "./routes";
+// import ServerCaches from "./utils/cache/server.cache.ts.draft";
+import chalk from "chalk";
 
 dotenv.config();
 
@@ -51,11 +52,20 @@ app.use((req: Request, res: Response, next: NextFunction) => {
 app.use(errorConverter);
 app.use(errorHandler);
 
+// const newEncryptionKey = crypto.randomBytes(32).toString("hex");
+// console.log("cript: ", newEncryptionKey);
+
 // Gestion des erreurs non capturées
 process.on("unhandledRejection", (err: Error) => {
   //console.error("Erreur non gérée:", err.message);
   // Enregistrer l'erreur dans un service de monitoring
 });
+
+// const cache = new ServerCaches({filepath: "/caches/test.json"});
+// console.log(chalk.yellowBright("Fichier cache utilisé :", cache.filepath));
+// cache.readCache();
+
+// console.log(crypto.randomBytes(32).toString("hex"));
 
 process.on("uncaughtException", (err: Error) => {
   //console.error("Exception non capturée:", err.message);

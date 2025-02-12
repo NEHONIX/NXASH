@@ -1,0 +1,299 @@
+{
+  "cachedData": {
+    "timestamp": 1739383686008,
+    "studentLevel": "BackEnd-N0",
+    "courses": [
+      {
+        "id": "55ylyv9FANfUvuq0bWIC",
+        "content": [],
+        "resources": [],
+        "quizzes": [],
+        "title": "Les class + conditions: visio",
+        "description": "Dans ce cours nous allons parler des [nehonix.writeImportant]classes et des conditions [/nehonix.writeImportant]. Contenu du cours:\n\nexplications: [nehonix.printCode]// Création d'une classe Animal\nclass Animal {\n\n  // Le constructeur de la classe Animal\n  // Le constructeur est une méthode spéciale pour créer et initialiser un objet créé avec une classe.\n  constructor(nom) {\n    // Initialisation de la propriété 'nom' avec la valeur passée en paramètre\n    this.nom = nom;\n  }\n\n  // Définition d'une méthode dans notre classe Animal\n  // Une méthode est une fonction qui appartient à une classe.\n  direBonjours() {\n    // Cette méthode retourne une chaîne de caractères qui inclut le nom de l'animal\n    return \"Salut je m'appelle \" + this.nom;\n  }\n \n}\n\n// Création d'une instance de la classe Animal\n// Une instance est un objet concret créé à partir d'une classe.\nconst maClasse = new Animal(\"Prince LM\");\n\n// Appel de la méthode direBonjours sur l'instance maClasse\n// et affichage du résultat dans la console\nconsole.log(maClasse.direBonjours());\n\n/**\n * Getter => get: Obtenir ; Setter => set: Mettre \n * \n * Getter: nous permet d'obtenir des informations d'une propriété.\n * Setter: nous permet de modifier des informations d'une propriété.\n * \n * Les getters et setters sont des méthodes qui permettent de contrôler l'accès aux propriétés d'un objet.\n */[/nehonix.printCode]\n\n[nehonix.writeHighlight]\nles classes:\n\n [/nehonix.writeHighlight]\n\n\n[nehonix.printCode]\nclass Compte {\n  // Le constructeur est une méthode spéciale pour créer et initialiser un objet créé avec une classe.\n  constructor(soldeInitial) {\n    // Initialisation de la propriété 'solde' avec la valeur passée en argument lors de la création de l'objet.\n    this.solde = soldeInitial;\n  }\n\n  // Les getters permettent de définir une méthode qui sera appelée lorsqu'on accède à une propriété.\n  // Ici, le getter 'sommeDisponible' permet d'obtenir le solde actuel du compte.\n  get sommeDisponible() {\n    // On peut ajouter des traitements supplémentaires ici \n    const monSolde = this.solde;\n    return monSolde;\n  }\n\n  // Les setters permettent de définir une méthode qui sera appelée lorsqu'on assigne une valeur à une propriété.\n  // Ici, le setter 'updateSommeDisponible' permet de mettre à jour le solde du compte.\n  set updateSommeDisponible(nouveauSolde) {\n    // On peut ajouter des validations ou des traitements supplémentaires ici \n    this.solde = nouveauSolde;\n  }\n}\n\n// Création d'une instance de la classe 'Compte' avec un solde initial de 10 000 FCFA.\nconst monCompte = new Compte(10000);\n\n// Utilisation du getter pour obtenir le solde disponible.\nconst soldeObtenu = monCompte.sommeDisponible;\n\n// Affichage du solde disponible en utilisant le getter directement.\nconsole.log(\"Le solde disponible est: \", monCompte.sommeDisponible, \"FCFA\");\n\n// Affichage du solde disponible en utilisant la variable 'soldeObtenu'.\nconsole.log(\n  'Le solde disponible en utilisant la variable \"soldeObtenu\" est: ',\n  soldeObtenu,\n  \"FCFA\"\n);\n\n// Mise à jour du solde disponible en utilisant le setter.\nmonCompte.updateSommeDisponible = 20000;\n\n// Affichage du nouveau solde disponible après mise à jour.\nconsole.log(\"Le nouveau solde disponible est: \", monCompte.sommeDisponible, \"FCFA\");\n\n[/nehonix.printCode]\n\n\n[nehonix.writeImportant]Les conditions [/nehonix.writeImportant]:\n\n\n\n[nehonix.printCode]// Les conditions en JavaScript\n/**\n * Les conditions permettent d'exécuter du code seulement si certaines conditions sont remplies.\n * La structure de base d'une condition est \"if\".\n * \n * Exemple:\n * si (condition) {\n *   // code à exécuter si la condition est vraie\n * }\n */\n\n// Fonction pour envoyer Jacques acheter du pain\nfunction envoyerJacques() {\n  const pain = \"Aller acheter du pain\"; // Déclaration d'une variable avec une valeur de type string\n\n  // Vérifie si la variable 'pain' est vide ou non définie\n  if (!pain) {\n    // Si 'pain' est vide ou non définie, retourne \"Aller acheter de la sardine\"\n    return \"Aller acheter de la sardine\";\n  }\n\n  // Si 'pain' n'est pas vide, exécute ce code\n  console.log(\"Jacques est en train de faire de la cuisine\");\n  return pain; // Retourne la valeur de 'pain'\n}\n\n// Appel de la fonction et affichage du résultat dans la console\nconsole.log(envoyerJacques());\n\n// Les 3 signes d'égalité (===) signifient que la condition est \"stricte\":\n// elle compare à la fois la valeur et le type des deux opérandes\n// Exemple: 5 === \"5\" retourne false car les types sont différents (number vs string)\n\n// Un string vide (chaine de caractères vide) retourne par défaut le type de donnée boolean \"false\"\n// Pour vérifier si une chaine est vide, il ne faut pas utiliser le signe d'égalité stricte (===)\n// Nous utilisons le point d'exclamation (!) pour vérifier si la chaine est vide.\n// Si elle est vide, cela retournera \"true\" et donc le code s'exécutera[/nehonix.printCode]\n",
+        "level": "BackEnd-N0",
+        "duration": "67",
+        "category": "Backend",
+        "prerequisites": [
+          "Avoir suivie le prémier cours sur les class",
+          "Connaître les constructors"
+        ],
+        "objectives": [
+          "Savoir faire la difference entre les setters et les getters",
+          "Utiliser les conditions"
+        ],
+        "instructorId": "r0XpC9XOCUYKRjyG58IiRvUwc3n2",
+        "chapters": [
+          {
+            "lessons": [],
+            "id": "chapter-1",
+            "title": "Undefined",
+            "description": "",
+            "order": 1,
+            "duration": 1
+          }
+        ],
+        "createdAt": { "_seconds": 1739034915, "_nanoseconds": 506000000 },
+        "courseUrl": "https://youtu.be/C2j9BjgslJw?si=cdptu6-iEPPAdZkv",
+        "courseUrlType": "video",
+        "thumbnail": "https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcQqNqVICviBiGqcmpBhsb1NUg7uvHTYrgHGE4w8HWm4NAcDWg09pRE0Zt2-gmbi1VJTvyY&usqp=CAU",
+        "profName": "Seth | Admin",
+        "publishedAt": { "_seconds": 1739034915, "_nanoseconds": 506000000 },
+        "status": "published",
+        "updatedAt": { "_seconds": 1739034935, "_nanoseconds": 804000000 }
+      },
+      {
+        "id": "DBGEtcnG9tQ5QYyNw3gH",
+        "content": [],
+        "resources": [],
+        "quizzes": [],
+        "duration": "8",
+        "category": "Backend",
+        "prerequisites": ["Avoir compris les cours sur les variables"],
+        "objectives": ["Comprendre les types de données en JS"],
+        "instructorId": "r0XpC9XOCUYKRjyG58IiRvUwc3n2",
+        "chapters": [
+          {
+            "lessons": [],
+            "id": "chapter-1",
+            "title": "Découverte des types de données",
+            "description": "",
+            "order": 1,
+            "duration": 4
+          }
+        ],
+        "createdAt": { "_seconds": 1738138283, "_nanoseconds": 672000000 },
+        "courseUrl": "https://youtu.be/2FD7cdItzZQ?si=Qxh_dwngIoz_HKYS",
+        "courseUrlType": "video",
+        "thumbnail": "https://wpengine.com/wp-content/uploads/2021/07/jsheader.png",
+        "publishedAt": { "_seconds": 1738138283, "_nanoseconds": 672000000 },
+        "status": "published",
+        "level": "BackEnd-N0",
+        "description": "\nDéclaration des variables[nehonix.writeHighlight]\nEn JavaScript moderne, nous avons 3 façons de déclarer des variables \n[nehonix.printCode]let nom = \"Pierre\";        // Variable modifiable\nconst age = 25;           // Constante (non modifiable)\nvar ancienneVariable = 3; // Ancienne syntaxe (à éviter)[/nehonix.printCode]\n\nLes bonnes pratiques recommandent :\n\nUtiliser const par défaut\nUtiliser let uniquement quand la variable doit être modifiée\nÉviter var (ancien JavaScript)[/nehonix.writeHighlight]",
+        "title": "Les Variables en JS",
+        "updatedAt": { "_seconds": 1738711329, "_nanoseconds": 876000000 }
+      },
+      {
+        "id": "EvaFQoNlGZpj84GM4hFR",
+        "content": [],
+        "resources": [],
+        "quizzes": [],
+        "title": "Les fonctions en JS partie 1",
+        "level": "BackEnd-N0",
+        "duration": "20",
+        "category": "Backend",
+        "prerequisites": [
+          "Savoir afficher des messages dans une console",
+          "Savoir déclarer des variables",
+          "Savoir les differents types de données"
+        ],
+        "objectives": [
+          "Faire une introduction sur les fonctions",
+          "Savoir la structure d'une fonction",
+          "Savoir déclarer des fonctions"
+        ],
+        "instructorId": "r0XpC9XOCUYKRjyG58IiRvUwc3n2",
+        "chapters": [
+          {
+            "lessons": [],
+            "id": "chapter-1",
+            "title": "Introduction d'une fonction",
+            "description": "",
+            "order": 1,
+            "duration": 4
+          }
+        ],
+        "createdAt": { "_seconds": 1738749117, "_nanoseconds": 44000000 },
+        "courseUrl": "https://youtu.be/22_CotUNBH8?si=cmB040la8340MKnY",
+        "courseUrlType": "video",
+        "thumbnail": "https://www.h2prog.com/wp-content/uploads/2020/11/6.png",
+        "profName": "Seth | Admin",
+        "publishedAt": { "_seconds": 1738749117, "_nanoseconds": 44000000 },
+        "status": "published",
+        "description": "[nehonix.writeHighlight]Les fonctions en JS[/nehonix.writeHighlight]\nDans ce cours, nous allons passer en revue de ce qu'une fonction! \n[nehonix.writeDef]Définition fondamentale :\nUne fonction est un bloc de code réutilisable qui effectue une tâche spécifique. C'est comme une \"machine\" qui peut prendre des entrées (paramètres), effectuer des opérations, et retourner un résultat.[/nehonix.writeDef] \n\n[nehonix.writeImportant]a) Paramètres et Arguments[/nehonix.writeImportant]\n\n[nehonix.printDef]\nLes paramètres sont les variables listées dans la définition de la fonction\nLes arguments sont les valeurs réelles passées à la fonction\nIls permettent de rendre les fonctions flexibles et réutilisables\n\nb) Return\n\nUne fonction peut renvoyer une valeur avec 'return'\nSans 'return', la fonction renvoie 'undefined'\nLe 'return' arrête immédiatement l'exécution de la fonction[/nehonix.printDef]\n\n[nehonix.writeImportant]code de ce cours:[/nehonix.writeImportant] [nehonix.printCode]//Les fonctions en JS\n/**Ce sont des blocs de code réutilsable pour effectuer des actions\n * spécifique. Exemple d'une machine qui peut prendre des \n * entrées (paramètres) et effectue des opérations.\n * Nous devons utiliser les fonctions pour sa partie:\n * -Reutilisabilité\n * -Organisation\n * -Maintenance: facilite la modification et le \"debogage\"\n * Syntaxe: [motClé:function] + nomDeLaFonction + (paramètres: optionnelle) +\n * {}\n * console.log(\"Texte \", valeurDynamique)\n * const a = 8772\n * console.log(\"Le message\",a)\n * console.log(`Le message que veut ${a}`) //Les templates litteraux: gabarits\n */\n\n//Prémier cas sans paramètres\nfunction direBonjourSansParamètres(){\n    console.log(`Salut je m'appelle ${\"nom\"} et j'ai ${\"12 ans\"}`)\n}\n\n//Deuxième cas avec les paramètres\nfunction direBonjour(nom, age, sexe){\n    console.log(`Salut je m'appelle ${nom} j'ai ${age}ans et je suis ${sexe}`)\n}\n\ndireBonjour(\"Jean\", 12, \"Masculin\")\n\n//Sans paramètres (arguments) \ndireBonjourSansParamètres()\n\n\nfunction retournerUneSalutation (nom){\n    return `Salut je m'appelle ${nom}`\n}\n\nconst presenteToi = retournerUneSalutation(\"Jean\")\n\nconsole.log(presenteToi) //ça affichera le retour de ma fonction[/nehonix.printCode]",
+        "updatedAt": { "_seconds": 1738749813, "_nanoseconds": 157000000 }
+      },
+      {
+        "id": "PNDeEpkbKZrvuRwyHTrj",
+        "content": [],
+        "resources": [],
+        "quizzes": [],
+        "title": "Les classes en JS du 04/02/2025 -version VISIO",
+        "description": "[nehonix.writeImportant]Code du cours[/nehonix.writeImportant]: [nehonix.printCode]/**Les classes en JS\n * introduite en ES6(2015), sa mission est de rendre \n * la programmation Object Orienté plus  intuitive (plus intérressant).\n * Pour definir une classe en JS, on se sert du mot clé: class suivie du\n * nom de la classe. NB: La prémière lettre du nom de la classe doit être en \n * majuscule!\n * \n * Propriété générale: \n * class + NomDeLaClasse {}\n * \n * A l'interieur des classes, nous avons des fonctions construteurs,\n * ces fonctions constructeurs ne peux donc pas être créer avec la méthode classique\n * c'est-à-dire: function NomDuConstructeur {}\n * Comment donc déclarer les constructeurs dans les classes en JS ?\n * Pour se faire, on se servira du mot clé: constructor: c'est une fonction \n * \n * Les arroys functions sont des fonctions. \n */\n\nclass Salutation {\n constructor(nom){\n    this.reponse = function (){\n        return `que ${nom}`\n    }\n }\n /**\n  * The function presenteToi logs a message about studying classes in object-oriented programming and\n  * presenting oneself.\n  */\n presenteToi(){\n    const reponse = this.reponse()\n    console.log(`Je suis entrain d'étudier les classes (la POO).\n        Je me présente en tant ${reponse} `)\n    return `je teste ma salutation`\n } \n}\n\n//Pour appeler une classe, nous allons créer une instance\nconst maPresentation = new Salutation(\"Koffi Elis...\").presenteToi()\n\nconsole.log(\"Voici ma presentation: \", maPresentation)\n\n\n/** Les méthodes VS les propriétés VS les fonctions\n * les méthodes sont des fonctions qui appartiennent à une \n * classe ou un object en loccurrence, ce sont donc des types de \n * données de référence!\n * {\n *  clé: \"string\" \n * }\n * \n * \n * \n * \n */\n\n\n\n// function salutation(nom){\n//     return \"Salut je m'appelle \" + nom\n// }\n\n// const resultat = (nom)=>{\n//     return \"Salut je m'appelle \" + nom\n// }\n\n// console.log(resultat(\"Prince\"))\n\n[/nehonix.printCode]\n",
+        "level": "BackEnd-N0",
+        "duration": "62",
+        "category": "Backend",
+        "prerequisites": [
+          "Avoir faire les cours sur les fonctions",
+          "Avoir faire les cours sur les constructeurs"
+        ],
+        "objectives": ["Faire une présentation des class"],
+        "instructorId": "r0XpC9XOCUYKRjyG58IiRvUwc3n2",
+        "chapters": [
+          {
+            "lessons": [],
+            "id": "chapter-1",
+            "title": "Intro aux bases des classes",
+            "description": "",
+            "order": 1,
+            "duration": 1
+          }
+        ],
+        "createdAt": { "_seconds": 1738750955, "_nanoseconds": 552000000 },
+        "courseUrl": "https://youtu.be/uxwDQHF3IpM?si=bfoaT5XdlV-poI97",
+        "courseUrlType": "video",
+        "thumbnail": "https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcRVryoAUfA1Nbpsh3B0IiIQ7DtQCNa4pugIUw&s",
+        "profName": "Seth | Admin",
+        "publishedAt": { "_seconds": 1738750955, "_nanoseconds": 552000000 },
+        "status": "published",
+        "updatedAt": { "_seconds": 1738750983, "_nanoseconds": 758000000 }
+      },
+      {
+        "id": "T7U5GQ7wCcGzJHZhzyXV",
+        "prerequisites": [],
+        "content": [],
+        "resources": [],
+        "quizzes": [],
+        "title": "#2 fonctions en JavaScript: return",
+        "description": "[nehonix.writeImportant]Définition fondamentale[/nehonix.writeImportant]\n\n[nehonix.printEx]\nUne fonction est un bloc de code réutilisable qui effectue une tâche spécifique. C'est comme une \"machine\" qui peut prendre des entrées (paramètres), effectuer des opérations, et retourner un résultat.\n[/nehonix.printEx]\n\n[nehonix.writeImportant]Pourquoi utiliser des fonctions ?[/nehonix.writeImportant]\nRéutilisabilité : Écrire le code une fois, l'utiliser plusieurs fois\nOrganisation : Découper le code en morceaux logiques et gérables\nMaintenance : Facilite la modification et le débogage\nAbstraction : Masquer la complexité derrière une interface simple\n\n[nehonix.writeImportant]a) Paramètres et Arguments[/nehonix.writeImportant]\n\n[nehonix.printEx]\nLes paramètres sont les variables listées dans la définition de la fonction\nLes arguments sont les valeurs réelles passées à la fonction\nIls permettent de rendre les fonctions flexibles et réutilisables\n[/nehonix.printEx]\n\n[nehonix.writeImportant]b) Return[/nehonix.writeImportant]\n\n[nehonix.printEx]Une fonction peut renvoyer une valeur avec 'return'\nSans 'return', la fonction renvoie 'undefined'\nLe 'return' arrête immédiatement l'exécution de la fonction\n[/nehonix.printEx]\n\n[nehonix.writeImportant]c) Scope (Portée)[/nehonix.writeImportant]\n [nehonix.printEx]\nGlobal : Variables accessibles partout\nLocal : Variables uniquement accessibles dans la fonction\nLexical : Une fonction peut accéder aux variables de sa fonction parente\n[nehonix.printEx]\n\n[nehonix.writeImportant]Les différents types de fonctions :[/nehonix.writeImportant]\n\n[nehonix.writeImportant]a) Fonction déclarative\n\n[nehonix.printEx]La plus basique et traditionnelle\nBénéficie du hoisting (peut être utilisée avant sa déclaration)[/nehonix.printEx]\n[nehonix.printCode]\n\n// 1. Déclaration de fonctions\n// -------------------------\n\n// Fonction déclarative (function declaration)\nfunction direBonjour(nom) {\n    return `Bonjour ${nom}!`;\n}\n\n// Expression de fonction (function expression)\nconst direAuRevoir = function(nom) {\n    return `Au revoir ${nom}!`;\n};\n\n// Fonction fléchée (arrow function)\nconst saluer = (nom) => `Salut ${nom}!`;\n\n[/nehonix.printCode]\n\n[nehonix.writeNote]code du cours: [/nehonix.writeNote]\n\n[nehonix.printCode]\n//Une fonction doit retourner des valeurs sinon, elle retournera la valeur\n/**par defaut qui est \"undefined\" */\n//Pour definir une fonction: function + nomDeLaFunction(param1, param2, ....paramN){}\n//Les paramètres (params) ne sont pas obligatoires (cela depends du besoin....)\n\nfunction appelleUnePersonne(personne, nom) {\n  //function appelleUnePersonne (\"test de personne\"){console.log(\"Je veux appeler test de personne\")}\n  console.log(`Je veux appeler ${personne}`);\n  console.log(\"Je suis en haut du mot return\");\n  return \"voici le resulat\"; //C'est le retour de cette fonction\n}\n\n// const b = 189 //b=189\n// const a  = b //a = b or b = 189 donc a = 189\n//La valeur par defaut d'une fonction qui ne retourne rien est de type \"undefined\"\n\nconst resultatDeLaFonction = appelleUnePersonne(\"test de personne\", \"\"); //S'il y a des paramètres dans la fonction, lors de son appelation, on passera des args\n//Si ma fonction prend deux params, lors de l'appellation, il faut passer 2 args\n// console.log(\"La fonction ne retourne rien donc: \", resultatDeLaFonction);\nconsole.log(resultatDeLaFonction);\n\n\n[/nehonix.printCode]\n\n\n[nehonix.printCode]\n//Les fonctions\n/**La syntaxes pour declarer une fonction est:\n * function + nomDeLaFonction + suivie d'une parenthèse contenant des paramètres optionnel + un object . Soit:\n * function + (paramètres){}\n */\n\n// function sommesDesValeurs() {}\n\n/**Prenons un exemple: vous envoyer votre petit frère, pour acheter\n * du pain, sur la route, il fait ce qu'il veut, arriver, il l'achète\n * le pain et se \"retourne\".\n *\n * Le faite que votre frère puisse marcher et partir acheter du pain,\n * ce sont des instructions qu'il exécute pour attiendre l'objectif d'achater du pain\n *\n */\nfunction direBonjoursATousLeMonde(param1, prenom, a, b, c, d) {\n  //param1 = \"Ali mange\"\n  const test = param1; //Declaration des variables locales: accessible que dans la fonction où elle  a été déclarée\n  const nom = test; //Declaration des variables locales: accessible que dans la fonction où elle  a été déclarée\n  console.log(`salut le monde, je m'appelle ${nom}`); //salut le monde, je m'appelle\n  return nom;\n}\n\nconst test = \"Romeo\"; //Variable globale\nconsole.log(\"La valeur de test est: \", test);\n\n//Exécuter une fonction\nconst resultat = direBonjoursATousLeMonde(\"Ali mange\", 23, {}, [], \"\");\nconsole.log(`Le resultat de cette fonction est: `, resultat);\n\n\n[/nehonix.printCode]",
+        "level": "BackEnd-N0",
+        "duration": "15",
+        "category": "Backend",
+        "objectives": [
+          "Comprendre la declaraction des fonctions",
+          "Savoir la difference entre les paramètres et les arguments"
+        ],
+        "instructorId": "r0XpC9XOCUYKRjyG58IiRvUwc3n2",
+        "chapters": [
+          {
+            "lessons": [],
+            "id": "chapter-1",
+            "title": "Undefined",
+            "description": "",
+            "order": 1,
+            "duration": 20
+          }
+        ],
+        "createdAt": { "_seconds": 1738871616, "_nanoseconds": 882000000 },
+        "courseUrl": "https://youtu.be/8uMGx79T7CI?si=A8a7o-ErhWJ7N_9P",
+        "courseUrlType": "video",
+        "thumbnail": "https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcTzVM6P6f6nl9FtzwdZOMVDCTtEazGt79zcng&s",
+        "profName": "Seth | Admin",
+        "publishedAt": { "_seconds": 1738871616, "_nanoseconds": 882000000 },
+        "status": "published",
+        "updatedAt": { "_seconds": 1738871662, "_nanoseconds": 604000000 }
+      },
+      {
+        "id": "V9PRQP7FtDCnrjhhphGU",
+        "content": [],
+        "resources": [],
+        "quizzes": [],
+        "title": "#1 Les constructeurs en JavaScript ",
+        "level": "BackEnd-N0",
+        "duration": "28",
+        "category": "Backend",
+        "prerequisites": [
+          "Avoir faire le cours sur les objects",
+          "Avoir fait le cours sur les fonctions",
+          "Savoir déclarer et afficher un message dans le terminal à l'aide de console.[type]",
+          "Savoir accéder aux méthodes de l'object grâce à ses propriétés$[replaceby=\"et la méthode de la destructuration\"$close]"
+        ],
+        "objectives": [
+          "Comprendre les instances (savoir comment créer une instance",
+          "$[replace=\"Connaitre la difference entre un constructeur et une fonction\"$close_print(replace: nehonix.space)]"
+        ],
+        "instructorId": "r0XpC9XOCUYKRjyG58IiRvUwc3n2",
+        "chapters": [
+          {
+            "lessons": [],
+            "id": "chapter-1",
+            "title": "Les bases de la déclaration des Classes",
+            "description": "",
+            "order": 1,
+            "duration": 28
+          }
+        ],
+        "createdAt": { "_seconds": 1738280758, "_nanoseconds": 575000000 },
+        "courseUrl": "https://youtu.be/_IyHyiv_50Y?si=aFYZTiOuv7hwzoUa",
+        "courseUrlType": "video",
+        "thumbnail": "https://i.ytimg.com/vi/7cb5Yx0BfBo/sddefault.jpg",
+        "publishedAt": { "_seconds": 1738280758, "_nanoseconds": 575000000 },
+        "status": "published",
+        "description": "Code du cours:  \n\n[nehonix.printCode]\n//Un constructeur en JS sont des fonctions spéciales qui crée des objects selon \n//le model défini. \"this\" \"new\"\nchrome-extension://difoiogjjojoaoomphldepapgpbgkhkb/assets/logo-OYJ34ERC.png\nconst obj = {\n    nom: \"Seth\",\n    prenom: \"Test\",\n}\n\nconst calcul = {\n    a: 12,\n    b: 34\n}\n/** Une instance:\n * C'est \n */\n\nfunction Voiture(marque, couleur){\n    this.marque = marque\n    this.couleur = couleur \n\n  this.afficheLeMesgSuivant =  function afficheLeMesg (){\n        return `La marque de la voiture est: ${this.marque} et est de couleur: ${this.couleur}`\n    }\n\n    /*  \n        {\n    marque: marque,\n    couleur: couleur\n    }\n    */\n}\n//Ici j'ai appélé ma fonction et non créé une instance!\n// const voitures = Voiture(\"Peugeot\", \"blue\")\n\n//Ici j'ai crée une instance(object)\nconst voitures = new Voiture(\"Peugeot\", \"blue\")\nconst leMesgEst = voitures.afficheLeMesgSuivant()\n\nconsole.log(leMesgEst);\n\n// console.log(\"Voici les voitures: \", voitures)\n// console.log()\n\n// function Addition (a, b){\n//     this.a = a,\n//     this.nbr2 = b\n//     return this.a + this.nbr2\n// }\n\n// const resultat = Addition(82, 10)\n\n// console.log(\"Le resultat de ce calcul est le suivant: \", resultat)\n\n[/nehonix.printCode]",
+        "updatedAt": { "_seconds": 1738700030, "_nanoseconds": 12000000 }
+      },
+      {
+        "id": "cvNaXmYKGkpeYFa5UlRZ",
+        "content": [],
+        "resources": [],
+        "quizzes": [],
+        "level": "BackEnd-N0",
+        "duration": "180",
+        "category": "Backend",
+        "prerequisites": [
+          "savoir comment afficher un messages dans un terminale",
+          "Savoir créer un fichier JS"
+        ],
+        "objectives": ["Savoir déclarer les variables en JS"],
+        "instructorId": "r0XpC9XOCUYKRjyG58IiRvUwc3n2",
+        "chapters": [
+          {
+            "lessons": [],
+            "id": "chapter-1",
+            "title": "Introduction aux bases",
+            "description": "",
+            "order": 1,
+            "duration": 60
+          }
+        ],
+        "createdAt": { "_seconds": 1738135545, "_nanoseconds": 264000000 },
+        "courseUrl": "https://youtu.be/Kb-93EZr4D8?si=g6jCCuIpFSkl6TGW",
+        "courseUrlType": "video",
+        "thumbnail": "https://aymeric-auberton.fr/img/cours/cours-js-max.jpg",
+        "publishedAt": { "_seconds": 1738135545, "_nanoseconds": 264000000 },
+        "status": "published",
+        "description": "Les Types de Données Primitifs\nLes types de données permettent de catégoriser différentes sortes de valeurs qu'une variable peut contenir. En JavaScript, il existe[nehonix.writeImportant] deux grandes catégories de types[/nehonix.writeImportant] : [nehonix.writeNote] 1. Les Types Primitifs Number (Nombre) String (Chaîne de caractères) Undefined Null Symbol (introduit avec ES6) Boolean (Booléen) 2. Les Types Complexes (ou Types de Référence) Object (Objet) Array (Tableau - qui est en fait un type d'objet) Function (Fonction - aussi un type d'objet) Les Caractéristiques Importantes Vérification du type: POur vérifier le type de données d'un data (un donnée en js) on utilise le mot clé typeof. Exemple: typeof 42; // \"number\" typeof \"texte\"; // \"string\" typeof true; // \"boolean\" typeof {}; // \"object\" typeof []; // \"object\" typeof null; // \"object\" (c'est une anomalie historique) Typage dynamique JavaScript est un langage à typage dynamique, ce qui signifie que les variables peuvent changer de type : let x = 5; // x est un nombre x = \"bonjour\"; // maintenant x est une chaîne de caractères Valeurs spéciales pour les nombres Infinity // Représente l'infini -Infinity // Représente l'infini négatif NaN // \"Not a Number\" (pas un nombre) [/nehonix.writeNote]",
+        "title": "#2 Les types de données en JS",
+        "updatedAt": { "_seconds": 1738711298, "_nanoseconds": 279000000 }
+      },
+      {
+        "id": "fRRFVv2ZF7AyfjdlQHve",
+        "content": [],
+        "resources": [],
+        "quizzes": [],
+        "title": "Les class - Fonctions - Constructeur en JS # 2",
+        "description": "[nehonix.printDef]Les fonctions; les class ; les constructeurs...des mots que nous entendons souvent dans la programmation, à quoi ils (ces mots) nous servent donc dans la programmation ? Dans ce cours, nous allons aborder une pétite partie de leurs rôles. [/nehonix.printDef]\n\n[nehonix.printCode]//Dans ce cours nous parlerons des fonctions; constructeurs; class\n/**\n * @fonctions\n * Une fonction c'est un bloc de code dans laquelle\n * plusieurs instructions seront données puis être exécuter\n * lors de son appellation.\n * Appeler un fonction: c'est exécuter cette fonction\n * En effet, les instructtions d'une fonction n'est exécutée\n * que lorsqu'elle est appelée.\n *\n * syntaxe: function + nomDeLaFonction: optionnel(){}\n *\n * -Les variables locales sont des variables que definissons à\n * l'interrieur d'une fonction. Elles sont accessible que dans la fonction\n * à laquelle elle a été declarée.\n *\n * -Les variables globales: sont des variables que nous defissons à l'exterieur\n * d'un bloc (exemple une fonction).\n *\n * Les paramètres sont des variables locales que nous defissons\n * ce sont donc des valeurs que nous passons lors de l'appelation d'une fonction\n *  */\n\nfunction direBonjour(name, age) {\n  //name est un paramètre\n  const nom = name; //nom est une variable locale\n  console.log(\"Bonjours. Je m'appelle \", nom, ` et j'ai ${age} ans`);\n}\n//Le nombres de paramètres qu'une fonction va prendre, sera le nombres d'arg qu'on passera\ndireBonjour(\"Ali kouadio\", 12);\n\n/**Return\n * Une fonction doit toujours retourner une valeur sinon\n * elle retourne \"undefined\" => rien ou void par défaut.\n * Pour retourner une valeur, il faut utiliser le mot clé\n * return\n */\n\nfunction additions(a, b, c) {\n  //string + number = ça ne se calcule pas mais ça s'ajoute ou concatene\n  const calculs = a + b + c;\n  return calculs;\n}\nconst resultat = additions(\"test\", 12, \"ali\"); //test + 12 + ali = test12ali\n\nconsole.log(\"La sommes est:\", resultat);\n\n//Rest parameters\n/**Supposons que nous avons plusieurs arguments à passer\n * dans une fonction (lors de son appellation).\n * exemple passer un nombre d'arg indefini dans la fonction: additions(12, 13, 12, 82, )\n * Les rest parameters nous permettent d'avoir plusieurs args regroupé\n * dans une variables locales (dans les params de la fonction)\n * et seront dans un array (tableau).\n */\n\nfunction sommes(...nombres) {\n  return nombres;\n}\n\nconst res = sommes(12, 14, \"test\", \"nom\", {}, []); //[12, 14, \"test\", \"nom\", {}, []]\n\nconsole.log(\"Le retour de res: \", res);\n\n/**\n * @constructeur\n * Les constructeurs sont des fonctions spéciales, elle est\n * utilisée pour créer des objects. La première lettre du nom\n * du contruteur doit etre en maj\n * syntaxes: function MonContructeur(){\n * }\n */\n\nfunction Personnes(nom, age) {\n  this.name = nom; //On dit que name est une variable d'instance\n  this.age = age;\n  this.sePresenter = function () {\n    return `Salut je m'appelle ${this.name} et j'ai ${this.age} ans`;\n  };\n}\n\n//POur créer l'object on utilise le mot clé new\nconst personne1 = new Personnes(\"Ali\", 55);\nconst presentation = personne1.sePresenter();\n\nconsole.log(presentation);\n\n/**Dans un object on deux parties:\n * la clé et les valeurs\n * {\n *  name: nom,\n *  age: age\n *  sePresenter: function (){\n * }\n *\n * const personne1 = {\n * name: \"Ali\",\n * age: 55,\n * sePresenter: function (){\n * `Salut je m'appelle \"Ali\" et j'ai 55 ans`;\n * }\n * }\n * }\n */\n\n/**\n * @Class\n *\n * Les classes sont comme les constructeurs la seule diff est que\n * avec les classes l'écriture est encore plus simplifiée et propre\n * syntaxe: class + NomClass {}\n *\n * constructor() {} equivaut à function Constructeur(){}\n * \n * de meme constructor(nom, espece) {\n    this.nom = nom;\n    this.espece = espece;\n  } equivaut à  function Constructeur(nom, espece) {\n    this.nom = nom;\n    this.espece = espece;\n  }\n *  */\n\nclass Animal {\n  constructor(nom, espece) {\n    this.nom = nom;\n    this.espece = espece;\n  }\n\n  //Les methodes des class: sont des methodes (fonctions) propre à la class\n\n  description() {\n    return `${this.nom} est un ${this.espece}`;\n  }\n}\n\nconst chat = new Animal(\"Miaou\", \"chat\");\nconst desciptionChat = chat.description();\n\nconsole.log(desciptionChat);\n[/nehonix.printCode]\n[",
+        "level": "BackEnd-N0",
+        "duration": "50",
+        "category": "Backend",
+        "prerequisites": [
+          "Savoir déclarer les variables",
+          "Savoir afficher des messages dans un terminal",
+          "Connaître les types de données"
+        ],
+        "objectives": [
+          "Maîtriser les fonctions (rest parameters...)",
+          "Comprendre les class"
+        ],
+        "instructorId": "r0XpC9XOCUYKRjyG58IiRvUwc3n2",
+        "chapters": [
+          {
+            "lessons": [],
+            "id": "chapter-1",
+            "title": "Compréhension des fonctions",
+            "description": "",
+            "order": 1,
+            "duration": 40
+          }
+        ],
+        "createdAt": { "_seconds": 1739273272, "_nanoseconds": 858000000 },
+        "courseUrl": "https://youtu.be/ObBd3ZU40MI?si=q4Wpe6SujXJsYGWw",
+        "courseUrlType": "video",
+        "thumbnail": "https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcTZanwVVYnMduRgM-vHu745or0NR9d6cyo9nQ&s",
+        "profName": "Seth | Admin",
+        "publishedAt": { "_seconds": 1739273272, "_nanoseconds": 858000000 },
+        "status": "published",
+        "updatedAt": { "_seconds": 1739273403, "_nanoseconds": 521000000 }
+      }
+    ]
+  }
+}

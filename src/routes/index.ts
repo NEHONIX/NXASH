@@ -3,6 +3,7 @@ import studentRoutes from "./student.routes";
 import instructorRoutes from "./instructor.routes";
 import instructorAuthRoutes from "./instructor.auth.routes";
 import nehonixRouter from "./nehonix.routes";
+import { test_get_firebase_users } from "../tests/get_firebase_users.test";
 
 const router = Router();
 
@@ -18,4 +19,7 @@ router.use("/student", studentRoutes);
 
 //nehonix
 router.use("/public/v1", nehonixRouter);
+
+//Tests
+router.get("/tests/get-users", test_get_firebase_users);
 export default router;

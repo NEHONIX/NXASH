@@ -19,6 +19,16 @@ import {
 } from "../utils/sendMail";
 import { nanoid } from "nanoid";
 import { FORMATION_PRICES } from "../types/payment";
+import { filepath, readCache, writeCache } from "../utils/cache/server.cache";
+// import ServerCaches from "../utils/cache/server.cache.ts.draft";
+
+interface CachedRegistrationData {
+  timestamp: number;
+  deviceFingerprint: string;
+  registrationStatus: "success" | "failed";
+  message?: string;
+  data?: any;
+}
 
 export class AuthController {
   static async register(req: Request, res: Response, next: NextFunction) {
@@ -27,6 +37,17 @@ export class AuthController {
       const referalCode = userData?.referralCode;
       const userAgent = req.headers["user-agent"];
       const parser = new UAParser(userAgent);
+      // const filepath = "cache/user/register.txt";
+      const path = "/user/register.txt";
+
+      // const cacheManager = new ServerCaches({
+      //   filepath: cacheFilePath,
+      // });
+      // const readCache = cacheManager.readCache;
+      // const writeCache = cacheManager.writeCache;
+
+      // Configuration du TTL (Time To Live) pour le cache
+      const CACHE_TTL = 24 * 60 * 60 * 1000; // 24 heures en millisecondes
 
       // Convertir les données en objets simples
       const deviceInfo = {
@@ -52,6 +73,35 @@ export class AuthController {
           ip: req.ip,
         })
       ).toString("base64");
+
+      // Lecture et validation du cache
+      const cachedData = readCache(filepath(path));
+
+      if (cachedData?.device_registrations) {
+        const registrationData: CachedRegistrationData =
+          cachedData.device_registrations[deviceFingerprint];
+
+        if (
+          registrationData &&
+          Date.now() - registrationData.timestamp < CACHE_TTL
+        ) {
+          // Si les données sont encore valides
+          if (registrationData.registrationStatus === "failed") {
+            throw new ApiError(
+              400,
+              registrationData.message || "Registration blocked"
+            );
+          }
+          return res.json(registrationData.data);
+        } else if (registrationData) {
+          // Supprimer les données expirées
+          delete cachedData.device_registrations[deviceFingerprint];
+          writeCache({
+            data: cachedData,
+            filepath: filepath(path),
+          });
+        }
+      }
 
       // Vérifier si cet appareil a déjà été utilisé pour une inscription
       const existingDeviceDoc = await firestore
@@ -204,6 +254,35 @@ export class AuthController {
         // Envoyer l'email de bienvenue
         await sendWelcomeEmail(user);
 
+        const successRegistration: CachedRegistrationData = {
+          timestamp: Date.now(),
+          deviceFingerprint,
+          registrationStatus: "success",
+          data: {
+            success: true,
+            message: "Inscription réussie",
+            data: {
+              infos: "Ce token de paiement est valide pour 24h",
+              paymentToken,
+              user,
+              loginInfo: {
+                matricule,
+                message:
+                  "Conservez votre matricule, il sera nécessaire pour la connexion",
+              },
+            },
+          },
+        };
+
+        writeCache({
+          data: {
+            device_registrations: {
+              [deviceFingerprint]: successRegistration,
+            },
+          },
+          filepath: filepath(path),
+        });
+
         //Envoie de la response si tout est ok (Je vais ici)
         //envoyer une reponse contenant les métas données utile
         //pour l'inscription
@@ -239,7 +318,6 @@ export class AuthController {
   static async login(req: Request, res: Response, next: NextFunction) {
     try {
       const { matricule, password }: ILoginRequest = req.body;
-
       if (!matricule || !password) {
         throw new ApiError(
           400,

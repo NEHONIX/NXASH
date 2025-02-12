@@ -39,3 +39,6 @@ coverage/
 *.swp
 *.swo
 *~
+*.users.*
+data.users.json
+.cache/*

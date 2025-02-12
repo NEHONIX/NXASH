@@ -1,11 +1,24 @@
 import { Request, Response, NextFunction } from "express";
-import axios from "axios";
 import ApiError from "../utils/ApiError";
 import { VALID_STUDENT_LEVELS } from "../types/course";
 import { cleanJSON, extractJSON } from "../utils/extrackJson";
 import { database } from "../conf/firebase";
 import { AuthenticatedRequest } from "../types/custom";
 import { GEMINI_AI_REQUEST } from "./api/gemini.api";
+import { filepath, readCache, writeCache } from "../utils/cache/server.cache";
+// import ServerCaches from "../utils/cache/server.cache.ts.draft";
+
+interface ExplanationCacheData {
+  timestamp: number;
+  courseId: string;
+  level: string;
+  userId: string;
+  explanation: any;
+}
+
+interface ExplanationCache {
+  [key: string]: ExplanationCacheData;
+}
 
 export class AIController {
   static async analyzeCode(req: Request, res: Response, next: NextFunction) {
@@ -170,6 +183,7 @@ export class AIController {
    * @returns
    * ça permet d'avoir un cours explicatif pour un cours
    */
+
   static async generateExplainingCourse(
     req: Request & AuthenticatedRequest,
     res: Response,
@@ -178,7 +192,20 @@ export class AIController {
     try {
       const courseData = req.body;
       const { course, level, courseId } = courseData;
+      const userId = req.user.uid;
+      const path = "/ai/courseExplanationCache.txt";
 
+      // Cache configuration
+      // const cacheManager = new ServerCaches({
+      //   filepath: "./caches/courseExplanationCache.json",
+      // });
+      // const readCache = cacheManager.readCache;
+      // const writeCache = cacheManager.writeCache;
+
+      const CACHE_TTL = 24 * 60 * 60 * 1000; // 24 heures - les explications sont statiques
+      const cacheKey = `${level}_${userId}_${courseId}`;
+
+      // Validation des entrées
       if (!course || !level || !courseId) {
         return res.status(400).json({
           success: false,
@@ -191,21 +218,60 @@ export class AIController {
         });
       }
 
-      const refDb = database.ref(
-        `explained-course/${level}/${req.user.uid}/${courseId}`
-      );
+      // Vérifier d'abord le cache local
+      const cachedData = readCache(filepath(path)) as ExplanationCache;
+      const cachedExplanation = cachedData?.[cacheKey];
 
-      if ((await refDb.once("value")).exists()) {
-        const data = (await refDb.once("value")).val();
-        res.status(201).json({
-          message: "Un cours explicatif a été généré pour ce cours",
+      if (
+        cachedExplanation &&
+        Date.now() - cachedExplanation.timestamp < CACHE_TTL
+      ) {
+        return res.status(200).json({
+          success: true,
+          message: "Explication du cours récupérée depuis le cache",
           data: {
-            explanation: data,
+            explanation: cachedExplanation.explanation,
+            fromCache: true,
           },
         });
-        return;
       }
 
+      // Si pas dans le cache local, vérifier Firebase Realtime Database
+      const refDb = database.ref(
+        `explained-course/${level}/${userId}/${courseId}`
+      );
+
+      const existingExplanation = await refDb.once("value");
+      if (existingExplanation.exists()) {
+        const data = existingExplanation.val();
+
+        // Mettre en cache l'explication existante
+        const newCacheData: ExplanationCache = {
+          ...cachedData,
+          [cacheKey]: {
+            timestamp: Date.now(),
+            courseId,
+            level,
+            userId,
+            explanation: data,
+          },
+        };
+
+        writeCache({
+          filepath: filepath(path),
+          data: newCacheData,
+        });
+
+        return res.status(200).json({
+          message: "Un cours explicatif a été récupéré",
+          data: {
+            explanation: data,
+            fromFirebase: true,
+          },
+        });
+      }
+
+      // Générer une nouvelle explication avec l'IA
       const coursePrompt = `
     Tu es un mentor en programmation. Donne une explication appronfondi et très détailé sur le cours suivant :
     "${course}" il faut t'assurer et faire tout le neccessaire  de sorte que l'élève (étudiant) puisse 
@@ -269,20 +335,17 @@ export class AIController {
   - **Si une réponse ou une question contient du code, elle doit toujours être entourée de [nehonix.printCode]...[/nehonix.printCode].**
   **Retourne directement le JSON sans mise en forme Markdown.**
 `;
+
       let explanation;
       try {
         const response = await GEMINI_AI_REQUEST({
           prompt: coursePrompt,
         });
 
-        const explanationResponse = await response.data.candidates[0].content
-          .parts[0].text;
-        explanation = explanationResponse;
+        explanation = response.data.candidates[0].content.parts[0].text;
       } catch (error: any) {
         return res.status(500).json({
-          message:
-            "Nous avons eu un problème lors de l'explication pour le cours avec l'id " +
-            courseId,
+          message: `Nous avons eu un problème lors de l'explication pour le cours avec l'id ${courseId}`,
           error,
         });
       }
@@ -290,12 +353,38 @@ export class AIController {
       const cleanIAOutPut = cleanJSON(explanation);
       const convertJsonToObj = extractJSON(cleanIAOutPut);
 
+      // Sauvegarder dans Firebase
       await refDb.set(convertJsonToObj);
+
+      // Mettre en cache la nouvelle explication
+      const newCacheData: ExplanationCache = {
+        ...cachedData,
+        [cacheKey]: {
+          timestamp: Date.now(),
+          courseId,
+          level,
+          userId,
+          explanation: convertJsonToObj,
+        },
+      };
+
+      // Nettoyer les entrées expirées du cache
+      Object.keys(newCacheData).forEach((key) => {
+        if (Date.now() - newCacheData[key].timestamp > CACHE_TTL) {
+          delete newCacheData[key];
+        }
+      });
+
+      writeCache({
+        data: newCacheData,
+        filepath: filepath(path),
+      });
 
       res.status(200).json({
         success: true,
         data: {
           explanation: convertJsonToObj,
+          generated: true,
         },
       });
     } catch (error) {

@@ -7,6 +7,51 @@ import { DocumentData, QueryDocumentSnapshot } from "firebase-admin/firestore";
 import { formatFirestoreDate } from "../utils/dateUtils";
 import { FORMATION_PRICES, PaymentDataInterface } from "../types/payment";
 import { generateToken } from "../utils/jwt.utils";
+// import ServerCaches from "../utils/cache/server.cache.ts.draft";
+import chalk from "chalk";
+import { filepath, readCache, writeCache } from "../utils/cache/server.cache";
+
+interface CachedCourseData {
+  timestamp: number;
+  courseId: string;
+  courseData: CourseData;
+}
+
+interface CourseCache {
+  [courseId: string]: CachedCourseData;
+}
+
+interface CachedCoursesData {
+  timestamp: number;
+  studentLevel: string;
+  courses: CourseData[];
+}
+
+interface CoursesCache {
+  [studentLevel: string]: CachedCoursesData;
+}
+
+interface DashboardCacheData {
+  timestamp: number;
+  studentId: string;
+  data: {
+    stats: {
+      totalCourses: number;
+      completedCourses: number;
+      inProgressCourses: number;
+      averageProgress: number;
+      nextScheduledCourse: ScheduleData | null;
+      subscription: any;
+      subscriptionStatus: string;
+    };
+    paymentData: PaymentDataInterface | null;
+    student: StudentInfos;
+  };
+}
+
+interface DashboardCache {
+  [studentId: string]: DashboardCacheData;
+}
 
 interface CourseData extends DocumentData {
   id: string;
@@ -38,6 +83,17 @@ export class StudentController {
     next: NextFunction
   ) {
     try {
+      const path = "/getAvailableCourses.txt";
+      // const cacheManager = new ServerCaches({
+      //   filepath: "caches/availableCoursesCache.txt",
+      // });
+      // const readCache = cacheManager.readCache;
+      // const writeCache = cacheManager.writeCache;
+
+      // TTL plus court pour les cours disponibles car ils peuvent changer plus fréquemment
+      const CACHE_TTL = 30 * 60 * 1000; // 30 minutes en millisecondes
+
+      // Récupérer le niveau de l'étudiant
       const studentDoc = await firestore
         .collection("users")
         .doc(req.user.uid)
@@ -46,10 +102,33 @@ export class StudentController {
       const studentData = studentDoc.data() as StudentInfos;
       const studentLevel = studentData?.specialty || "none";
 
-      // //console.log({
-      //   studentLevel,
-      // });
+      // Vérifier le cache
+      const cachedData = readCache(filepath(path)) as CoursesCache;
+      // console.log(
+      //   chalk.blueBright(
+      //     "Cours disponibles récupérés depuis le cache",
+      //     "Fichier cache utilisé :",
+      //     JSON.stringify({
+      //       cachedData: cachedData?.[studentLevel],
+      //     })
+      //   )
+      // );
+      const cachedCourses = cachedData?.[studentLevel];
 
+      if (cachedCourses && Date.now() - cachedCourses.timestamp < CACHE_TTL) {
+        // console.log(chalk.yellowBright("Cours disponibles...envoie en cours"));
+        return res.status(200).json({
+          success: true,
+          message: "Cours disponibles récupérés depuis le cache",
+          data: {
+            courses: cachedCourses.courses,
+            total: cachedCourses.courses.length,
+            fromCache: true,
+          },
+        });
+      }
+
+      // Si pas en cache ou cache expiré, récupérer depuis Firestore
       const coursesSnapshot = await firestore
         .collection("courses")
         .where("status", "==", "published")
@@ -63,12 +142,35 @@ export class StudentController {
         })
       ) as CourseData[];
 
+      // Mettre en cache les nouvelles données
+      const newCacheData: CoursesCache = {
+        ...cachedData,
+        [studentLevel]: {
+          timestamp: Date.now(),
+          studentLevel,
+          courses,
+        },
+      };
+
+      // Nettoyer les entrées expirées du cache
+      Object.keys(newCacheData).forEach((key) => {
+        if (Date.now() - newCacheData[key].timestamp > CACHE_TTL) {
+          delete newCacheData[key];
+        }
+      });
+
+      writeCache({
+        filepath: filepath(path),
+        data: newCacheData,
+      });
+
       res.status(200).json({
         success: true,
         message: "Cours disponibles récupérés avec succès",
         data: {
           courses,
           total: courses.length,
+          fromCache: false,
         },
       });
     } catch (error) {
@@ -86,7 +188,49 @@ export class StudentController {
   ) {
     try {
       const { courseId } = req.params;
+      const path = "/getCourseDetails.txt";
+      // const filepath = "cache/getCourseDetails.txt";
+      // const cacheManager = new ServerCaches({
+      //   filepath: "caches/courseCache.json",
+      // });
+      // const readCache = cacheManager.readCache;
+      // const writeCache = cacheManager.writeCache;
 
+      // Configuration du TTL (Time To Live)
+      const CACHE_TTL = 60 * 60 * 1000; // 1 heure en millisecondes
+
+      // Vérifier le cache d'abord
+      const cachedData = readCache(filepath(path)) as CourseCache;
+      const cachedCourse = cachedData?.[courseId];
+
+      if (cachedCourse && Date.now() - cachedCourse.timestamp < CACHE_TTL) {
+        // Vérifier le niveau de l'étudiant avant de retourner les données en cache
+        const studentDoc = await firestore
+          .collection("users")
+          .doc(req.user.uid)
+          .get();
+
+        const studentData = studentDoc.data() as StudentInfos;
+        const studentLevel = studentData?.specialty || "beginner";
+
+        if (cachedCourse.courseData?.level !== studentLevel) {
+          throw new ApiError(
+            403,
+            "Vous n'avez pas le niveau requis pour ce cours"
+          );
+        }
+
+        return res.status(200).json({
+          success: true,
+          message: "Détails du cours récupérés depuis le cache",
+          data: {
+            course: cachedCourse.courseData,
+            fromCache: true,
+          },
+        });
+      }
+
+      // Si pas en cache ou cache expiré, récupérer depuis Firestore
       const courseDoc = await firestore
         .collection("courses")
         .doc(courseId)
@@ -99,6 +243,7 @@ export class StudentController {
       const courseData = courseDoc.data() as CourseData;
       courseData.id = courseDoc.id;
 
+      // Vérifier le niveau de l'étudiant
       const studentDoc = await firestore
         .collection("users")
         .doc(req.user.uid)
@@ -114,18 +259,40 @@ export class StudentController {
         );
       }
 
+      // Mettre en cache les nouvelles données
+      const newCacheData: CourseCache = {
+        ...cachedData,
+        [courseId]: {
+          timestamp: Date.now(),
+          courseId,
+          courseData,
+        },
+      };
+
+      writeCache({
+        data: newCacheData,
+        filepath: filepath(path),
+      });
+
+      // Nettoyer les entrées expirées du cache
+      Object.keys(newCacheData).forEach((key) => {
+        if (Date.now() - newCacheData[key].timestamp > CACHE_TTL) {
+          delete newCacheData[key];
+        }
+      });
+
       res.status(200).json({
         success: true,
         message: "Détails du cours récupérés avec succès",
         data: {
           course: courseData,
+          fromCache: false,
         },
       });
     } catch (error) {
       next(error);
     }
   }
-
   /**
    * Récupérer l'emploi du temps de l'étudiant
    */
@@ -262,6 +429,7 @@ export class StudentController {
   /**
    * Récupérer le tableau de bord de l'étudiant
    */
+
   static async getDashboard(
     req: AuthenticatedRequest,
     res: Response,
@@ -269,7 +437,49 @@ export class StudentController {
   ) {
     try {
       const studentId = req.user.uid;
+      const path = "/getDashboard.txt";
+      // const cacheManager = new ServerCaches({
+      //   filepath: "caches/dashboardCache.json",
+      // });
+      // const readCache = cacheManager.readCache;
+      // const writeCache = cacheManager.writeCache;
+      // const filepath = "cache/getDashboard.txt";
 
+      // TTL différents selon le type de données
+      const CACHE_TTL = {
+        NORMAL: 5 * 60 * 1000, // 5 minutes pour les données générales
+        SUBSCRIPTION: 60 * 1000, // 1 minute pour les données d'abonnement
+        SCHEDULE: 15 * 60 * 1000, // 15 minutes pour les horaires
+      };
+
+      // Vérifier le cache
+      const cachedData = readCache(filepath(path)) as DashboardCache;
+      const cachedDashboard = cachedData?.[studentId];
+
+      const shouldRefreshSubscription =
+        cachedDashboard?.data?.stats?.subscription &&
+        Date.now() - cachedDashboard.timestamp > CACHE_TTL.SUBSCRIPTION;
+
+      const shouldRefreshSchedule =
+        cachedDashboard?.data?.stats?.nextScheduledCourse &&
+        Date.now() - cachedDashboard.timestamp > CACHE_TTL.SCHEDULE;
+
+      // Utiliser le cache si valide et pas besoin de rafraîchir l'abonnement
+      if (
+        cachedDashboard &&
+        Date.now() - cachedDashboard.timestamp < CACHE_TTL.NORMAL &&
+        !shouldRefreshSubscription &&
+        !shouldRefreshSchedule
+      ) {
+        return res.status(200).json({
+          success: true,
+          message: "Tableau de bord récupéré depuis le cache",
+          data: cachedDashboard.data,
+          fromCache: true,
+        });
+      }
+
+      // Récupération des données depuis Firestore
       const studentDoc = await firestore
         .collection("users")
         .doc(studentId)
@@ -278,11 +488,10 @@ export class StudentController {
       const studentData = studentDoc.data() as StudentInfos;
       const enrolledCourses = (studentData as any)?.enrolledCourses || [];
 
-      // Récupérer l'abonnement actif
+      // Récupération de l'abonnement
       const subscriptionSnapshot = await firestore
         .collection("subscriptions")
         .where("userId", "==", studentId)
-        // .where("status", "==", "actif")
         .limit(1)
         .get();
 
@@ -290,9 +499,7 @@ export class StudentController {
         ? (subscriptionSnapshot.docs[0].data() as Subscription)
         : null;
 
-      // //console.log("Sub: ", subscriptionSnapshot.docs[0].data());
-      // Ajouter un avertissement si l'abonnement expire bientôt
-
+      // Construction des stats
       const stats = {
         totalCourses: enrolledCourses.length,
         completedCourses: 0,
@@ -325,8 +532,9 @@ export class StudentController {
           : studentData.paymentStatus || "inactif",
       };
 
+      // Calcul des progrès si l'étudiant est inscrit à des cours
       if (enrolledCourses.length > 0) {
-        const coursesProgress = (studentData as any)?.coursesProgress || {}; //A faire
+        const coursesProgress = (studentData as any)?.coursesProgress || {};
         let totalProgress = 0;
 
         enrolledCourses.forEach((courseId: string) => {
@@ -342,6 +550,7 @@ export class StudentController {
 
         stats.averageProgress = totalProgress / enrolledCourses.length;
 
+        // Récupération du prochain cours planifié
         const now = new Date();
         const nextSchedule = await firestore
           .collection("schedules")
@@ -363,10 +572,10 @@ export class StudentController {
           };
         }
       }
-      //Préparation des données de paiement
+
+      // Gestion des données de paiement
       let paymentData: PaymentDataInterface | null = null;
       if (subscription) {
-        // console.log("subscription: ", subscription);
         const maintenant = new Date();
         const prochainPaiement = formatFirestoreDate(
           subscription.prochainPaiement
@@ -376,16 +585,7 @@ export class StudentController {
             (1000 * 60 * 60 * 24)
         );
 
-        // //console.log({
-        //   maintenant,
-        //   prochainPaiement,
-        //   status: subscription.status,
-        //   joursRestants
-        // });
-
         if (joursRestants <= 0) {
-          // console.log("Jours restants <= 0");
-          // Mettre à jour le statut de l'abonnement dans Firestore
           await firestore
             .collection("subscriptions")
             .doc(subscription.id)
@@ -394,7 +594,6 @@ export class StudentController {
               updatedAt: maintenant,
             });
 
-          // Mettre à jour le statut dans l'objet stats
           if (stats.subscription) {
             Object.assign(stats.subscription, {
               status: "inactif",
@@ -402,10 +601,8 @@ export class StudentController {
                 "Votre abonnement a expiré. Veuillez le renouveler pour continuer à accéder à vos cours.",
             });
           }
-          // Générer le token
-          const token = await generateToken(studentData);
 
-          //Création d'une section de paiement
+          const token = await generateToken(studentData);
           paymentData = {
             u: studentData.name,
             e: studentData.email,
@@ -414,9 +611,7 @@ export class StudentController {
             t: token,
             a: subscription.montantMensuel,
           };
-          // console.log("paymentData: ", paymentData);
         } else if (joursRestants <= 7) {
-          // //console.log({ joursRestants });
           if (stats.subscription) {
             Object.assign(stats.subscription, {
               warningMessage: `Attention : Votre abonnement expire dans ${joursRestants} jour${
@@ -424,10 +619,10 @@ export class StudentController {
               }. Pensez à le renouveler.`,
             });
           }
-          console.log("Status de paiement non mis à jour: ", joursRestants);
         }
       }
-      const data = {
+
+      const dashboardData = {
         stats,
         paymentData,
         student: {
@@ -435,13 +630,35 @@ export class StudentController {
         },
       };
 
+      // Mise en cache des nouvelles données
+      const newCacheData: DashboardCache = {
+        ...cachedData,
+        [studentId]: {
+          timestamp: Date.now(),
+          studentId,
+          data: dashboardData,
+        },
+      };
+
+      // Nettoyage des entrées expirées
+      Object.keys(newCacheData).forEach((key) => {
+        if (Date.now() - newCacheData[key].timestamp > CACHE_TTL.NORMAL) {
+          delete newCacheData[key];
+        }
+      });
+
+      writeCache({
+        data: newCacheData,
+        filepath: filepath(path),
+      });
+
       res.status(200).json({
         success: true,
         message: "Tableau de bord récupéré avec succès",
-        data,
+        data: dashboardData,
+        fromCache: false,
       });
     } catch (error) {
-      //console.log(error);
       next(error);
     }
   }
