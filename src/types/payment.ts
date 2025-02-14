@@ -269,3 +269,21 @@ export interface PaymentDataInterface {
   a: number; // montant
   ref?: string; // référence de paiement
 }
+
+export interface PaymentPro {
+  merchantId: string;
+  amount: number;
+  description: string;
+  channel: string;
+  countryCurrencyCode: string;
+  referenceNumber: string;
+  customerEmail: string;
+  customerFirstName: string;
+  customerLastname: string;
+  customerPhoneNumber: string;
+  notificationURL: string;
+  returnURL: string;
+  returnContext: string;
+  url: string;
+  success: boolean;
+}

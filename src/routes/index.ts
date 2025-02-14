@@ -15,7 +15,7 @@ router.use("/instructor", instructorRoutes);
 router.use("/student", studentRoutes);
 
 // // Routes pour les paiements
-// router.use("/payment", paymentRoutes);
+// router.use("/payment", paymentRoutes); /public/v1/payments/initialize
 
 //nehonix
 router.use("/public/v1", nehonixRouter);

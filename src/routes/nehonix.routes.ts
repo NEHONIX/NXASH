@@ -5,12 +5,12 @@ import { authMiddleware } from "../middlewares/auth.middleware";
 
 const router = Router();
 
-router.use(authMiddleware);
-
 // Routes pour les paiements
 router.use("/payments", paymentRoutes);
 
+router.use(authMiddleware);
+
 // Routes pour l'IA
-router.use("/ai", aiRoutes); 
+router.use("/ai", aiRoutes);
 
 export default router;

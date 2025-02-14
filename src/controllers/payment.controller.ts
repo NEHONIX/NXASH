@@ -8,6 +8,7 @@ import { paymentService } from "../services/payment.service";
 import { subscriptionService } from "../services/subscription.service";
 import { paymentStatsService } from "../services/payment.stats.service";
 import { notificationService } from "../services/notification.service";
+import { PaymentService } from "./api/paymentPro";
 
 export class PaymentController {
   private static async createOrUpdateSubscription(
@@ -69,7 +70,7 @@ export class PaymentController {
     try {
       const { paymentToken, paymentData } = req.body;
       const { amount, paymentPhoneNumber, paymentMethod } = paymentData;
-
+      console.log("Je suis là");
       if (paymentMethod === "orange" && !paymentPhoneNumber) {
         throw new ApiError(400, "Veuillez fournir votre numéro Orange Money");
       }
@@ -112,6 +113,13 @@ export class PaymentController {
         .doc(paymentRef)
         .set(paymentSession);
 
+      // const newPayment = new PaymentService(
+      //   process.env.PAYMENT_PRO_API_KEY as string
+      // );
+      // const { url: paymentUrl, success } = await newPayment.init();
+      // console.log({
+      //   paymentUrl,
+      // });
       // Envoyer les notifications
       await notificationService.sendPaymentInitiatedNotification(
         {

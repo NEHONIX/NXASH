@@ -16,7 +16,7 @@ import ApiError from "./utils/ApiError";
 import router from "./routes";
 // import ServerCaches from "./utils/cache/server.cache.ts.draft";
 import chalk from "chalk";
-
+ 
 dotenv.config();
 
 const app = express();
@@ -64,7 +64,8 @@ process.on("unhandledRejection", (err: Error) => {
 // const cache = new ServerCaches({filepath: "/caches/test.json"});
 // console.log(chalk.yellowBright("Fichier cache utilisé :", cache.filepath));
 // cache.readCache();
-
+  
+console.log("test", process.env.FIREBASE_PROJECT_ID);
 // console.log(crypto.randomBytes(32).toString("hex"));
 
 process.on("uncaughtException", (err: Error) => {
