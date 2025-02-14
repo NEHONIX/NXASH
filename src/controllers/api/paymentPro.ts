@@ -1,66 +1,44 @@
-export class PaymentService {
-  merchantId: string;
-  amount: number;
-  description: string;
-  channel: string;
-  countryCurrencyCode: string;
-  referenceNumber: string;
-  customerEmail: string;
-  customerFirstName: string;
-  customerLastname: string;
-  customerPhoneNumber: string;
-  notificationURL: string;
-  returnURL: string;
-  returnContext: string;
-  url: string;
-  success: boolean;
+import axios from "axios";
+import { PaymentPro as PaymentProInterface } from "../../types/payment";
 
-  constructor(merchantId: string) {
-    this.merchantId = merchantId;
-    this.amount = 0;
-    this.description = "";
-    this.channel = "";
-    this.countryCurrencyCode = "952";
-    this.referenceNumber = "";
-    this.customerEmail = "";
-    this.customerFirstName = "";
-    this.customerLastname = "";
-    this.customerPhoneNumber = "";
-    this.notificationURL = "";
-    this.returnURL = "";
-    this.returnContext = "";
-    this.url = "";
-    this.success = false;
+export class PaymentService {
+  private paymentDatas: PaymentProInterface;
+  private merchantId: string = process.env.PAYMENT_PRO_API_KEY || "";
+  private paymentBaseUrl =
+    "https://www.paiementpro.net/webservice/onlinepayment/js/initialize/initialize.php";
+  private dataToSend: (PaymentProInterface & { merchantId: string }) | null =
+    null;
+  private paymentUrl: string = "";
+  private success: boolean = false;
+  // success: boolean;
+  // url: string;
+  // returnContext: string;
+  // returnURL: string; //OMCIV2
+  // notificationURL: string;
+  // paymentDatas: PaymentProInterface;
+
+  constructor(paymentDatas: PaymentProInterface) {
+    this.merchantId;
+    this.paymentDatas = paymentDatas;
+    this.dataToSend = Object.assign(this.paymentDatas, {
+      merchantId: this.merchantId,
+    });
   }
 
-  async init(): Promise<{
-    url: string;
-    success: boolean;
-  }> {
-    const response = await fetch(
-      "https://www.paiementpro.net/webservice/onlinepayment/js/initialize/initialize.php",
-      {
-        method: "POST",
-        headers: {
-          Accept: "application/json",
-          "Content-Type": "application/json",
-        },
-        body: JSON.stringify(this),
-      }
-    );
-    let data = await response.json().then((data) => {
-      this.url = data.url;
-      this.success = data.success;
-    });
-    console.log(data);
+  async init(): Promise<any> {
+    const response = await axios.post(this.paymentBaseUrl, this.dataToSend);
+    const data = response.data;
+    this.success = data.success;
+    this.paymentUrl = data.url;
     return {
-      url: this.url,
-      success: this.success,
+      paymentUrl: data.url,
+      success: data.success,
     };
   }
 
-  async getUrlPayment(): Promise<{ url: string; success: boolean }> {
+  async getUrlPayment(): Promise<{ paymentUrl: string; success: boolean }> {
     let data = await this.init();
+    // console.log("data: ", data);
     return data;
   }
 }

@@ -84,7 +84,7 @@ const rotateKeys = (): void => {
 const expireCache = (): void => {
   try {
     fs.truncateSync(filepath("/cacheData.txt"), 0);
-    console.log("Cache expiré à:", new Date());
+    // console.log("Cache expiré à:", new Date());
   } catch (error) {
     // console.error("Erreur lors de l'expiration du cache:", error);
     console.error("Erreur lors de l'expiration du cache");

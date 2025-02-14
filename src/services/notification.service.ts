@@ -18,7 +18,8 @@ class NotificationService {
 
   async sendPaymentInitiatedNotification(
     data: NotificationData,
-    paymentMethod: string
+    paymentMethod: string,
+    { actionText, actionUrl }: { actionText: string; actionUrl: string }
   ) {
     const subject = `Nouvelle demande de paiement ${paymentMethod.toUpperCase()} - ${
       data.paymentRef
@@ -31,7 +32,11 @@ class NotificationService {
     await this.sendToClient(
       `Confirmation de votre demande de paiement ${paymentMethod} - ${this.SYSTEM_NAME}`,
       this.generateClientInitiationMessage(data, paymentMethod),
-      data.email
+      data.email,
+      {
+        actionText,
+        actionUrl,
+      }
     );
   }
 
@@ -71,12 +76,19 @@ class NotificationService {
     });
   }
 
-  private async sendToClient(subject: string, message: string, to: string) {
+  private async sendToClient(
+    subject: string,
+    message: string,
+    to: string,
+    other?: { actionUrl: string; actionText: string }
+  ) {
     await sendMailNotification({
       from: this.SYSTEM_NAME,
       to,
       subject,
       message,
+      actionUrl: other?.actionText,
+      actionText: other?.actionText,
     });
   }
 
@@ -148,13 +160,12 @@ Détails de votre abonnement :
 • Montant mensuel : ${data.amount} FCFA
 • Date de paiement : ${new Date().toLocaleDateString()}
 • Statut : Actif
-
-Prochaines étapes :
+Vous allez être redirigé vers la page de paiement. Une fois le paiement terminé, 
+veuillez sur ce bouton pour vérifier le statut de votre paiement.
 ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
 1. Connectez-vous à votre espace étudiant
 2. Complétez votre profil
 3. Accédez à vos cours
-4. Rejoignez notre communauté sur Discord
 
 Important :
 ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━

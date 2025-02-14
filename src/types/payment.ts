@@ -269,21 +269,17 @@ export interface PaymentDataInterface {
   a: number; // montant
   ref?: string; // référence de paiement
 }
-
+export type paymentChannel = "OMCIV2" | "MOMOCI" | "FLOOZ";
 export interface PaymentPro {
-  merchantId: string;
-  amount: number;
-  description: string;
-  channel: string;
-  countryCurrencyCode: string;
+  amount: number; //
+  description: string; //
+  channel: paymentChannel | false; //FLOOZ: Moov; OMCIV2: Orange; MOMOCI: MTN
+  countryCurrencyCode?: number; //
   referenceNumber: string;
   customerEmail: string;
-  customerFirstName: string;
-  customerLastname: string;
-  customerPhoneNumber: string;
-  notificationURL: string;
+  customerFirstName: string; //
+  customerLastname: string; //
+  customerPhoneNumber: string; //
+  notificationURL?: string;
   returnURL: string;
-  returnContext: string;
-  url: string;
-  success: boolean;
 }

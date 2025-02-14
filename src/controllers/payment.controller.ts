@@ -3,12 +3,18 @@ import { firestore } from "../conf/firebase";
 import ApiError from "../utils/ApiError";
 import { decodeToken } from "../utils/jwt.utils";
 import { ITokenPayload } from "../types/model";
-import { IPaymentSession, PaymentStatus } from "../types/payment";
+import {
+  IPaymentSession,
+  paymentChannel,
+  PaymentStatus,
+} from "../types/payment";
 import { paymentService } from "../services/payment.service";
 import { subscriptionService } from "../services/subscription.service";
 import { paymentStatsService } from "../services/payment.stats.service";
 import { notificationService } from "../services/notification.service";
 import { PaymentService } from "./api/paymentPro";
+import { encodeData } from "../utils/encryption";
+import { config } from "../conf/conf";
 
 export class PaymentController {
   private static async createOrUpdateSubscription(
@@ -69,23 +75,24 @@ export class PaymentController {
   ) {
     try {
       const { paymentToken, paymentData } = req.body;
-      const { amount, paymentPhoneNumber, paymentMethod } = paymentData;
-      console.log("Je suis là");
-      if (paymentMethod === "orange" && !paymentPhoneNumber) {
-        throw new ApiError(400, "Veuillez fournir votre numéro Orange Money");
-      }
+      const { amount, paymentPhoneNumber, paymentMethod: p_m } = paymentData;
+      const paymentMethod = p_m as "orange" | "mtn" | "moov";
 
       const decodedTokenData = await decodeToken(paymentToken);
       if (typeof decodedTokenData === "string") {
         throw new ApiError(400, "Token invalide");
       }
-
+      /**
+       * /nehonix/pending-payment?data=${encodedData}&provider=${currentPaymentMethod} */
       const userData = decodedTokenData as ITokenPayload;
-      const paymentRef = `PAY-${Math.random().toString(36).substring(2, 15)}`;
+      const paymentRef = `NXH_PAY-${Math.random()
+        .toString(36)
+        .substring(2, 15)}`;
 
       // //console.log(userData);
       const user = firestore.collection("users").doc(userData.uid);
-      const { specialty = "none", name } = (await user.get()).data()!;
+      const { specialty = "none", name: u } = (await user.get()).data()!;
+      const name = u as string;
 
       if (!user) throw new ApiError(404, "Utilisateur non trouvé!");
 
@@ -99,7 +106,7 @@ export class PaymentController {
         studentPhone: userData.phone,
         paymentPhoneNumber,
         paymentMethod,
-        status: paymentMethod === "orange" ? "awaiting_orange_code" : "pending",
+        status: "pending",
         amount,
         specialty,
         createdAt: new Date(),
@@ -108,18 +115,42 @@ export class PaymentController {
         adminProcessing: false,
       };
 
+      //Initialisation du paiement
+      const verificationData = {
+        ref: paymentSession?.paymentRef,
+        t: paymentToken,
+      };
+      const encodedData = encodeData(verificationData);
+      //Conception d'URL de retour
+      const returnURL = `${config.pendingPaymentURL}?data=${encodedData}&provider=${paymentSession.paymentMethod}`;
+
+      // console.log("returnURL: ", returnURL);
+      const newPayment = new PaymentService({
+        amount: paymentSession.amount,
+        channel:
+          paymentSession.paymentMethod === "orange"
+            ? "OMCIV2"
+            : paymentMethod === "moov"
+            ? "FLOOZ"
+            : "MOMOCI",
+        customerEmail: paymentSession.studentEmail,
+        customerLastname: name.split(" ").slice(1).join(" "),
+        customerPhoneNumber: paymentSession.studentPhone,
+        description: "Paiement",
+        referenceNumber: paymentSession.paymentRef,
+        customerFirstName: name.split(" ")[0],
+        returnURL,
+        notificationURL: returnURL,
+      });
+      const data = await newPayment.getUrlPayment();
+
+      if (!data.success || !data.paymentUrl) return;
+      // return
       await firestore
         .collection("payment_sessions")
         .doc(paymentRef)
         .set(paymentSession);
 
-      // const newPayment = new PaymentService(
-      //   process.env.PAYMENT_PRO_API_KEY as string
-      // );
-      // const { url: paymentUrl, success } = await newPayment.init();
-      // console.log({
-      //   paymentUrl,
-      // });
       // Envoyer les notifications
       await notificationService.sendPaymentInitiatedNotification(
         {
@@ -130,7 +161,11 @@ export class PaymentController {
           paymentPhoneNumber,
           email: userData.email,
         },
-        paymentMethod
+        paymentMethod,
+        {
+          actionText: "Vérifier",
+          actionUrl: returnURL
+        }
       );
 
       const instructions =
@@ -138,10 +173,21 @@ export class PaymentController {
           ? "Validez la transaction sur votre téléphone et entrez le code reçu"
           : `Notre service client ${paymentMethod.toUpperCase()} va vous contacter`;
 
+      // console.log("payment res: ", {
+      //   paymentRef,
+      //   status: paymentSession.status,
+      //   instructions,
+      //   paymentUrl: data.paymentUrl,
+      // });
       res.status(200).json({
         success: true,
         message: "Demande de paiement initialisée avec succès",
-        data: { paymentRef, status: paymentSession.status, instructions },
+        data: {
+          paymentRef,
+          status: paymentSession.status,
+          instructions,
+          paymentUrl: data.paymentUrl,
+        },
       });
     } catch (error) {
       //console.log(error);
