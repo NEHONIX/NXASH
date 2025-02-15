@@ -14,7 +14,7 @@ export type PaymentStatus =
   | "processing";
 
 /** Méthodes de paiement disponibles */
-export type PaymentMethod = "orange" | "mtn" | "moov";
+export type PaymentMethodType = "orange" | "mtn" | "moov" | "wave";
 
 /**
  * Interface principale pour une session de paiement
@@ -34,7 +34,7 @@ export interface IPaymentSession {
   /** Montant du paiement en FCFA */
   amount: number;
   /** Méthode de paiement choisie */
-  paymentMethod: PaymentMethod;
+  paymentMethod: PaymentMethodType;
   /** Numéro de téléphone utilisé pour le paiement */
   paymentPhoneNumber: string;
   /** Statut actuel du paiement */
@@ -176,7 +176,7 @@ export interface IPaymentFilters {
   /** Date de fin pour la période */
   endDate?: Date;
   /** Filtrer par méthode de paiement */
-  paymentMethod?: PaymentMethod;
+  paymentMethod?: PaymentMethodType;
   /** Recherche par email ou référence */
   searchTerm?: string;
   /** Numéro de page pour la pagination */
@@ -269,7 +269,7 @@ export interface PaymentDataInterface {
   a: number; // montant
   ref?: string; // référence de paiement
 }
-export type paymentChannel = "OMCIV2" | "MOMOCI" | "FLOOZ";
+export type paymentChannel = "OMCIV2" | "MOMOCI" | "FLOOZ" | "WAVECI";
 export interface PaymentPro {
   amount: number; //
   description: string; //

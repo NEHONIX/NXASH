@@ -30,6 +30,7 @@ export class PaymentService {
     const data = response.data;
     this.success = data.success;
     this.paymentUrl = data.url;
+    // console.log(data);
     return {
       paymentUrl: data.url,
       success: data.success,

@@ -6,6 +6,7 @@ import { ITokenPayload } from "../types/model";
 import {
   IPaymentSession,
   paymentChannel,
+  PaymentMethodType,
   PaymentStatus,
 } from "../types/payment";
 import { paymentService } from "../services/payment.service";
@@ -76,7 +77,7 @@ export class PaymentController {
     try {
       const { paymentToken, paymentData } = req.body;
       const { amount, paymentPhoneNumber, paymentMethod: p_m } = paymentData;
-      const paymentMethod = p_m as "orange" | "mtn" | "moov";
+      const paymentMethod = p_m as PaymentMethodType;
 
       const decodedTokenData = await decodeToken(paymentToken);
       if (typeof decodedTokenData === "string") {
@@ -124,27 +125,36 @@ export class PaymentController {
       //Conception d'URL de retour
       const returnURL = `${config.pendingPaymentURL}?data=${encodedData}&provider=${paymentSession.paymentMethod}`;
 
-      // console.log("returnURL: ", returnURL);
-      const newPayment = new PaymentService({
+      const paymentChannel: Record<PaymentMethodType, paymentChannel> = {
+        orange: "OMCIV2",
+        moov: "FLOOZ",
+        mtn: "MOMOCI",
+        wave: "WAVECI",
+      };
+
+      const dataToSend = {
         amount: paymentSession.amount,
-        channel:
-          paymentSession.paymentMethod === "orange"
-            ? "OMCIV2"
-            : paymentMethod === "moov"
-            ? "FLOOZ"
-            : "MOMOCI",
+        channel: paymentChannel[paymentSession.paymentMethod],
         customerEmail: paymentSession.studentEmail,
-        customerLastname: name.split(" ").slice(1).join(" "),
+        customerLastname:
+          name.split(" ").slice(1).join(" ") || "Unkown LastName",
         customerPhoneNumber: paymentSession.studentPhone,
-        description: "Paiement",
+        description: "NEHONIX - NXSAH",
         referenceNumber: paymentSession.paymentRef,
-        customerFirstName: name.split(" ")[0],
+        customerFirstName: name.split(" ")[0] || "Unkown Name",
         returnURL,
         notificationURL: returnURL,
-      });
+      };
+
+      const newPayment = new PaymentService(dataToSend);
       const data = await newPayment.getUrlPayment();
 
+      // console.log("newPayment data: ", data);
+      // console.log("sendingDatas: ", dataToSend);
       if (!data.success || !data.paymentUrl) return;
+      // console.log({
+      //   urlForPayment: data.paymentUrl,
+      // });
       // return
       await firestore
         .collection("payment_sessions")
@@ -164,7 +174,7 @@ export class PaymentController {
         paymentMethod,
         {
           actionText: "Vérifier",
-          actionUrl: returnURL
+          actionUrl: returnURL,
         }
       );
 
