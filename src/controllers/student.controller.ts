@@ -10,6 +10,7 @@ import { generateToken } from "../utils/jwt.utils";
 // import ServerCaches from "../utils/cache/server.cache.ts.draft";
 import chalk from "chalk";
 import { filepath, readCache, writeCache } from "../utils/cache/server.cache";
+import { CACHE_TTL } from "../utils/cache/cache_ttl";
 
 interface CachedCourseData {
   timestamp: number;
@@ -89,9 +90,6 @@ export class StudentController {
       // });
       // const readCache = cacheManager.readCache;
       // const writeCache = cacheManager.writeCache;
-
-      // TTL plus court pour les cours disponibles car ils peuvent changer plus fréquemment
-      const CACHE_TTL = 30 * 60 * 1000; // 30 minutes en millisecondes
 
       // Récupérer le niveau de l'étudiant
       const studentDoc = await firestore

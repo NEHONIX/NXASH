@@ -1,29 +1,78 @@
-[nodemon] restarting due to changes...
-[nodemon] starting `ts-node src/server.ts`
-NEHONIX Server started on port:5000
-Token n: eyJhbGciOiJSUzI1NiIsInR5cCI6IkpXVCJ9.eyJhdWQiOiJodHRwczovL2lkZW50aXR5dG9vbGtpdC5nb29nbGVhcGlzLmNvbS9nb29nbGUuaWRlbnRpdHkuaWRlbnRpdHl0b29sa2l0LnYxLklkZW50aXR5VG9vbGtpdCIsImlhdCI6MTczNzQxNDMxMywiZXhwIjoxNzM3NDE3OTEzLCJpc3MiOiJmaXJlYmFzZS1hZG1pbnNkay04MXFuZUBuZWhvbml4LWFjYWRlbXkuaWFtLmdzZXJ2aWNlYWNjb3VudC5jb20iLCJzdWIiOiJmaXJlYmFzZS1hZG1pbnNkay04MXFuZUBuZWhvbml4LWFjYWRlbXkuaWFtLmdzZXJ2aWNlYWNjb3VudC5jb20iLCJ1aWQiOiJoamQ0OUNoZmNrUVJ2UTlRU1BqYzRFOHNtTWYyIn0.TbZpg35sq2grG2LeWkpbHcPs-WPFRWhep5JmhjF9_pLAdFWqOK6Zq7Rh2gw9Yz7d0TYXcjrvpOI1wljUKiv2xSpONwfGbCiGdsmOnnWK69RIonW3Lf3Yd5bGsZkRaGE6o1Y4SlHPf-5xDOjBtUqpKNRfnHvV9J7OyTpfxRFDohX0xzz2o2pNCcuoC0LAIixkm0FE6cnWOFyzRp_eam1V3jq9An3C2uCYlw5286t5ywYtJoAB2aHW0JL763f1kkXSrC_ig1KLgQv5BT76jAApUzUn_SOUHHTEv7HhNckXXpUbgAD2JD77-SM2pbYlTF1esa5aZeQYkeMdk77u-UGu7g
-On continue!
-Tentative de vérification du token...
-Erreur de vérification du token: FirebaseAuthError: verifyIdToken() expects an ID token, but was given a custom token. See https://firebase.google.com/docs/auth/admin/verify-id-tokens for details on how to retrieve an ID token.
-    at FirebaseTokenVerifier.verifyContent (C:\Users\LENOVO\OneDrive\Documents\iDevo V1_Projet\iDevo new Projets\Projet en cours\NEHONIX\StudentLabs\server-side_v2.1\node_modules\firebase-admin\lib\auth\token-verifier.js:245:19)
-    at C:\Users\LENOVO\OneDrive\Documents\iDevo V1_Projet\iDevo new Projets\Projet en cours\NEHONIX\StudentLabs\server-side_v2.1\node_modules\firebase-admin\lib\auth\token-verifier.js:160:18
-    at processTicksAndRejections (node:internal/process/task_queues:105:5) {
-  errorInfo: {
-    code: 'auth/argument-error',
-    message: 'verifyIdToken() expects an ID token, but was given a custom token. See https://firebase.google.com/docs/auth/admin/verify-id-tokens for details on how to retrieve an ID token.'
-  },
-  codePrefix: 'auth'
-}
-Token n: eyJhbGciOiJSUzI1NiIsInR5cCI6IkpXVCJ9.eyJhdWQiOiJodHRwczovL2lkZW50aXR5dG9vbGtpdC5nb29nbGVhcGlzLmNvbS9nb29nbGUuaWRlbnRpdHkuaWRlbnRpdHl0b29sa2l0LnYxLklkZW50aXR5VG9vbGtpdCIsImlhdCI6MTczNzQxNDMxMywiZXhwIjoxNzM3NDE3OTEzLCJpc3MiOiJmaXJlYmFzZS1hZG1pbnNkay04MXFuZUBuZWhvbml4LWFjYWRlbXkuaWFtLmdzZXJ2aWNlYWNjb3VudC5jb20iLCJzdWIiOiJmaXJlYmFzZS1hZG1pbnNkay04MXFuZUBuZWhvbml4LWFjYWRlbXkuaWFtLmdzZXJ2aWNlYWNjb3VudC5jb20iLCJ1aWQiOiJoamQ0OUNoZmNrUVJ2UTlRU1BqYzRFOHNtTWYyIn0.TbZpg35sq2grG2LeWkpbHcPs-WPFRWhep5JmhjF9_pLAdFWqOK6Zq7Rh2gw9Yz7d0TYXcjrvpOI1wljUKiv2xSpONwfGbCiGdsmOnnWK69RIonW3Lf3Yd5bGsZkRaGE6o1Y4SlHPf-5xDOjBtUqpKNRfnHvV9J7OyTpfxRFDohX0xzz2o2pNCcuoC0LAIixkm0FE6cnWOFyzRp_eam1V3jq9An3C2uCYlw5286t5ywYtJoAB2aHW0JL763f1kkXSrC_ig1KLgQv5BT76jAApUzUn_SOUHHTEv7HhNckXXpUbgAD2JD77-SM2pbYlTF1esa5aZeQYkeMdk77u-UGu7g
-On continue!
-Tentative de vérification du token...
-Erreur de vérification du token: FirebaseAuthError: verifyIdToken() expects an ID token, but was given a custom token. See https://firebase.google.com/docs/auth/admin/verify-id-tokens for details on how to retrieve an ID token.
-    at FirebaseTokenVerifier.verifyContent (C:\Users\LENOVO\OneDrive\Documents\iDevo V1_Projet\iDevo new Projets\Projet en cours\NEHONIX\StudentLabs\server-side_v2.1\node_modules\firebase-admin\lib\auth\token-verifier.js:245:19)
-    at C:\Users\LENOVO\OneDrive\Documents\iDevo V1_Projet\iDevo new Projets\Projet en cours\NEHONIX\StudentLabs\server-side_v2.1\node_modules\firebase-admin\lib\auth\token-verifier.js:160:18
-    at processTicksAndRejections (node:internal/process/task_queues:105:5) {
-  errorInfo: {
-    code: 'auth/argument-error',
-    message: 'verifyIdToken() expects an ID token, but was given a custom token. See https://firebase.google.com/docs/auth/admin/verify-id-tokens for details on how to retrieve an ID token.'
-  },
-  codePrefix: 'auth'
-}
+Bonjour à tous les futurs développeurs full-stack mobile ! 
+J'ai donc reflechis et penser à vous remetre notre planning (le planning de la formation)
+de sorte à ce que vous puissiez suivre le rythme. 
+Je suis ravi de vous présenter le plan de notre formation Full-Stack Android/iOS avec Python.
+ Nous allons ensemble parcourir 6 chapitres et 24 leçons pour passer de zéro à la création d’applications mobiles cross-platform, 
+ avec un backend solide en Python. L'objectif est de vous emmener à comprendre tout ce qui est attaché au fullStack,
+ pour y arriver, vous aurez besoin de traviller beaucoup de votre côté. 
+
+Chapitre 1 : Introduction à Python
+Objectif : Poser les bases de Python, le langage qui va vous permettre de tout construire.
+
+Leçon 1 : Vous découvrirez les variables, les types de données, et les opérateurs.
+
+Leçon 2 : Vous maîtriserez les structures de contrôle : conditions (if/else) et boucles.
+
+Leçon 3 : Vous apprendrez à créer des fonctions et à organiser votre code avec des modules.
+
+Leçon 4 : Vous manipulerez des fichiers pour lire et écrire des données.
+
+ À la fin de ce chapitre, vous écrirez vos premiers scripts Python utiles ! (nous avons terminé cette partie, vous le
+ reverez sur votre plateforme), on continue 😎. Avant donc de passer au prochain
+ chapt, vu que le dev mobile est l'objectif, nous allons faire de simple intro 
+ en 1 semaines sans code.
+
+Chapitre 2 : Python Intermédiaire (bon là, vous commencez à être des pros)
+Objectif : Approfondir Python pour préparer le développement backend.
+
+Leçon 1 : Plongez dans la programmation orientée objet avec les classes et l’héritage.
+
+Leçon 2 : Gérez les erreurs élégamment avec try/except.
+
+Leçon 3 : Manipulez des données complexes avec les listes et les dictionnaires.
+
+Leçon 4 : Découvrez Flask ou FastAPI, les frameworks qui serviront de base à votre backend.
+
+Vous serez prêts à créer des APIs puissantes (c'est l'objectif)!
+
+Chapitre 3 : Développement Backend avec Flask/FastAPI
+Objectif : Construire un backend robuste pour vos applications mobiles.
+
+Leçon 1 : Installez et configurez Flask/FastAPI.
+
+Leçon 2 : Créez votre premier serveur web et comprenez son fonctionnement.
+
+Leçon 3 : Définissez des routes pour gérer les requêtes (GET, POST, PUT, DELETE).
+
+Leçon 4 : Connectez votre API à une base de données (SQLite ou PostgreSQL).
+
+ Vous aurez une API fonctionnelle avant même de toucher au mobile !
+
+Chapitre 4 : Authentification et Sécurité
+Objectif : Sécuriser votre backend et protéger les utilisateurs.
+
+Leçon 1 : Implémentez l’authentification avec JWT.
+
+Leçon 2 : Hashage des mots de passe avec bcrypt pour éviter les fuites de données.
+
+Leçon 3 : Protégez votre API contre les attaques (CORS, injections).
+
+Leçon 4 : Déployez votre API (normalement et avant, nous utilisons onrender... mais pour pimmenter cela
+nous allons le mettre sur le serveur nehonix.space qui tourne sur une VM AWS) pour la rendre accessible au monde entier.
+
+ Votre backend sera sécurisé ET professionnel !
+
+Chapitre 5 : Développement Mobile avec Kivy/BeeWare/Flet
+Objectif : Passer au mobile avec des frameworks cross-platform.
+
+Leçon 1 : Installez Kivy ou BeeWare et découvrez leur philosophie.
+
+Leçon 2 : Créez votre première interface utilisateur (boutons, labels, etc.).
+
+Leçon 3 : Gérez les interactions utilisateur (clics, saisies, etc.).
+
+Leçon 4 : Connectez votre app mobile à l’API backend que vous avez construite.
+
+Vous verrez votre application mobile prendre vie (ainsi, vous pourrez mettre sur le playstore...!
+Et pour ceux qui vont vouloir continuer, au niveau 2 on va créer de vraies apk solide 
+avec fluter et le langage C sharp
