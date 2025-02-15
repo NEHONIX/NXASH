@@ -328,6 +328,10 @@ export class AIController {
   }
 
   ### Règles :
+  - **Explique en détail chaque point (grands points)
+   et fournis une explication très détaillée. 
+   Ton objectif est de faire comprendre le cours 
+   par tous les moyens (mais respecte la structure pour permettre un bon formatage dans le frontend).**
   - **Ne génère aucun texte en dehors du JSON.**
   - tu dois obligatoirement à chaque fois illustrer tes explications
   -tu dois toujours t'assurer que les mots clés utilisés pour les formatages sont correctes (pas d'espace entre les balises exemple: [nehonix.prinCode ]...)
