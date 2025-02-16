@@ -320,7 +320,6 @@ export class AuthController {
       const { matricule, password }: ILoginRequest = req.body;
       console.log({ matricule, password });
       if (!matricule || !password) {
-        console.log("erreur d'auth")
         throw new ApiError(
           400,
           "Veuillez fournir le matricule et le mot de passe"
@@ -420,6 +419,7 @@ export class AuthController {
         throw new ApiError(401, "Identifiants invalides");
       }
     } catch (error) {
+      console.log(error)
       next(error);
     }
   }
