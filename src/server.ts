@@ -36,7 +36,11 @@ app.use("/api", router);
 
 // Route par défaut
 app.get("/", (req: Request, res: Response) => {
-  res.send("Bienvenue sur l'API StudentLabs");
+  res.send("Welcome to NEHONIX SERVER!" +
+    `
+    If you're seeing this page, it means that the server is up and running!
+    `
+  );
 });
 
 // Gestion des routes non trouvées
