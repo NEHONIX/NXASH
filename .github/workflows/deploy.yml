@@ -1,0 +1,22 @@
+name: Deploy to AWS
+
+on:
+  push:
+    branches:
+      - main  # Déclenchez le déploiement uniquement pour les commits sur la branche principale
+
+jobs:
+  deploy:
+    runs-on: ubuntu-latest
+
+    steps:
+      - name: Checkout code
+        uses: actions/checkout@v3
+
+      - name: Install dependencies
+        run: |
+          ssh -o StrictHostKeyChecking=no -i ${{ secrets.SSH_PRIVATE_KEY }} ec2-user@ec2-51-20-143-152.eu-north-1.compute.amazonaws.com "cd /home/ec2-user/NXASH && bun install"
+
+      - name: Deploy to AWS
+        run: |
+          ssh -o StrictHostKeyChecking=no -i ${{ secrets.SSH_PRIVATE_KEY }} ec2-user@ec2-51-20-143-152.eu-north-1.compute.amazonaws.com "cd /home/ec2-user/NXASH && git pull origin main && bun run build && sudo systemctl restart myapp.service"
