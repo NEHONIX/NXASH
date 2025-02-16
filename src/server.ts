@@ -58,5 +58,5 @@ process.on("uncaughtException", (err: Error) => {
 });
 
 app.listen(PORT, () => {
-  console.log(`✅ NEHONIX Server started on port: ${PORT}`);
+  console.log(`✅ NEHONIX Server has been with success started on port: ${PORT}`);
 });
