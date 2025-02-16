@@ -42,3 +42,5 @@ coverage/
 *.users.*
 data.users.json
 .cache/*
+deploy/*
+*.pem

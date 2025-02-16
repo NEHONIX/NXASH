@@ -1,9 +1,6 @@
-// Import the 'express' module along with 'Request' and 'Response' types from express
 import express, { Request, Response, NextFunction } from "express";
 import dotenv from "dotenv";
-import http from "http";
 import cookieParser from "cookie-parser";
-import crypto from "crypto";
 import {
   limiter,
   helmetMiddleware,
@@ -14,9 +11,8 @@ import {
 import { errorConverter, errorHandler } from "./middlewares/error.middleware";
 import ApiError from "./utils/ApiError";
 import router from "./routes";
-// import ServerCaches from "./utils/cache/server.cache.ts.draft";
 import chalk from "chalk";
- 
+
 dotenv.config();
 
 const app = express();
@@ -52,28 +48,15 @@ app.use((req: Request, res: Response, next: NextFunction) => {
 app.use(errorConverter);
 app.use(errorHandler);
 
-// const newEncryptionKey = crypto.randomBytes(32).toString("hex");
-// console.log("cript: ", newEncryptionKey);
-
-// Gestion des erreurs non capturées
 process.on("unhandledRejection", (err: Error) => {
-  //console.error("Erreur non gérée:", err.message);
-  // Enregistrer l'erreur dans un service de monitoring
+  console.error("Erreur non gérée:", err.message);
 });
 
-// const cache = new ServerCaches({filepath: "/caches/test.json"});
-// console.log(chalk.yellowBright("Fichier cache utilisé :", cache.filepath));
-// cache.readCache();
-  
-console.log("test", process.env.FIREBASE_PROJECT_ID);
-// console.log(crypto.randomBytes(32).toString("hex"));
-
 process.on("uncaughtException", (err: Error) => {
-  //console.error("Exception non capturée:", err.message);
-  // Enregistrer l'erreur dans un service de monitoring
+  console.error("Exception non capturée:", err.message);
   process.exit(1);
 });
 
-http.createServer(app).listen(PORT, () => {
-  console.log(`NEHONIX Server started on port:${PORT}`);
+app.listen(PORT, () => {
+  console.log(`✅ NEHONIX Server started on port: ${PORT}`);
 });

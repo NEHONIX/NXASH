@@ -3,10 +3,10 @@
   "version": "2.0.0",
   "main": "server.ts",
   "scripts": {
-    "start": "node dist/server.js",
+    "start": "bun run src/server.ts",
     "build": "tsc",
-    "dev": "nodemon src/server.ts"
-  },
+    "dev": "bun run --hot src/server.ts"
+  }, 
   "dependencies": {
     "@types/cookie-parser": "^1.4.8",
     "@types/jsonwebtoken": "^9.0.7",
