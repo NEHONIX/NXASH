@@ -318,7 +318,9 @@ export class AuthController {
   static async login(req: Request, res: Response, next: NextFunction) {
     try {
       const { matricule, password }: ILoginRequest = req.body;
+      console.log({ matricule, password });
       if (!matricule || !password) {
+        console.log("erreur d'auth")
         throw new ApiError(
           400,
           "Veuillez fournir le matricule et le mot de passe"
