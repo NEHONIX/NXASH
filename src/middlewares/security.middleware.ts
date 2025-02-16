@@ -74,6 +74,20 @@ export const corsMiddleware = cors({
   maxAge: 600, // 10 minutes
 });
 
+// export const accept_header_middleware = (
+//   req: Request,
+//   res: Response,
+//   next: NextFunction
+// ) => {
+//   if (req.headers["accept-encoding"]) {
+//     req.headers["accept-encoding"] = req.headers["accept-encoding"].replace(
+//       /\bbr\b,?\s*/g,
+//       ""
+//     );
+//   }
+//   next();
+// };
+
 // Compression
 export const compressionMiddleware = compression();
 

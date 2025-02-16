@@ -21,6 +21,18 @@ const app = express();
 // Middlewares de sécurité
 app.use(helmetMiddleware);
 app.use(corsMiddleware);
+
+// Middleware pour retirer 'br' de l'en-tête Accept-Encoding
+app.use((req, _, next) => {
+  const encoding = req.headers["accept-encoding"];
+
+  if (typeof encoding === "string") {
+    req.headers["accept-encoding"] = encoding.replace(/\bbr\b,?\s*/g, "");
+  }
+
+  next();
+});
+
 app.use(compressionMiddleware);
 app.use(xssMiddleware);
 app.use("/api", limiter);
@@ -31,26 +43,20 @@ app.use(cookieParser());
 app.use(express.urlencoded({ extended: true, limit: "10mb" }));
 app.use(express.static("public"));
 
+// Pour express-rate-limit : faire confiance aux proxies
+app.set("trust proxy", 1);
+
 // Routes
 app.use("/api", router);
 
-//Config ejs => def ejs comme moteur de rendu: templates
+// Config EJS (moteur de rendu)
 app.set("view engine", "ejs");
-
-//def le dossier static où on va mettre les vues
 app.set("views", system_path.join(__dirname, "views"));
-
-app.use(express.static("public"));
 
 // Route par défaut
 app.get("/", (req: Request, res: Response) => {
-  /**
-    "Welcome to NEHONIX SERVER!" +
-      `
-    ` */
   const welcome_msg = `Welcome to ${config.server._name}!`;
   const server_config = config.server;
-
   res.render("main", { welcome_msg, server_config });
 });
 
