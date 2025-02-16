@@ -1,0 +1,32 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title><%=server_config._name %></title>
+    <link href="styles/style.css" rel="stylesheet" />
+    <link href="styles/google_font.min.css" rel="stylesheet" />
+  </head>
+  <body>
+    <div class="floating-shapes"></div>
+    <div class="container">
+      <h1><%= welcome_msg %></h1>
+      <p>
+        Si vous voyez cette page, cela signifie que le serveur est lancé et
+        fonctionne correctement !
+      </p>
+      <p>
+        For more info, visit
+        <a href="<%=server_config._url %>" style="color: #ffdf6b"
+          >our website</a
+        >
+      </p>
+      <div class="button-container">
+        <button class="btn">Signup</button>
+      </div>
+    </div>
+
+    <script src="scripts/gsap.min.js" defer></script>
+    <script src="scripts/app.js" defer></script>
+  </body>
+</html>

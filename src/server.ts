@@ -11,12 +11,12 @@ import {
 import { errorConverter, errorHandler } from "./middlewares/error.middleware";
 import ApiError from "./utils/ApiError";
 import router from "./routes";
-import chalk from "chalk";
+import system_path from "path";
+import { config } from "./conf/conf";
 
 dotenv.config();
 
 const app = express();
-const PORT = process.env.PORT || 3000;
 
 // Middlewares de sécurité
 app.use(helmetMiddleware);
@@ -34,13 +34,24 @@ app.use(express.static("public"));
 // Routes
 app.use("/api", router);
 
+//Config ejs => def ejs comme moteur de rendu: templates
+app.set("view engine", "ejs");
+
+//def le dossier static où on va mettre les vues
+app.set("views", system_path.join(__dirname, "views"));
+
+app.use(express.static("public"));
+
 // Route par défaut
 app.get("/", (req: Request, res: Response) => {
-  res.send("Welcome to NEHONIX SERVER!" +
-    `
-    If you're seeing this page, it means that the server is up and running!
-    `
-  );
+  /**
+    "Welcome to NEHONIX SERVER!" +
+      `
+    ` */
+  const welcome_msg = `Welcome to ${config.server._name}!`;
+  const server_config = config.server;
+
+  res.render("main", { welcome_msg, server_config });
 });
 
 // Gestion des routes non trouvées
@@ -49,6 +60,7 @@ app.use((req: Request, res: Response, next: NextFunction) => {
 });
 
 // Conversion et gestion des erreurs
+const PORT = config.server._port;
 app.use(errorConverter);
 app.use(errorHandler);
 
@@ -62,5 +74,5 @@ process.on("uncaughtException", (err: Error) => {
 });
 
 app.listen(PORT, () => {
-  console.log(`✅ NEHONIX Server has been with success started on port: ${PORT}`);
+  console.log(`✅ NEHONIX server started on port: ${PORT}`);
 });
